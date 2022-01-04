@@ -1,0 +1,150 @@
+
+
+<div class="body">
+    <div class="selectors">
+        <div id="pSelector">
+            <label for="precision" style="text-align: left;">Choose precision:</label>
+            <select name="precision" id="precision"  class="CustomSelector">
+            <option value="1">Default</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        </div>
+        
+        <div id="mSelector">
+            <label for="method" style="text-align: left;" >Choose method:</label>
+            <select name="method" id="method" class="CustomSelector"(change) = "handleSwitch()">
+                <option value="0">Gauss-Elimination</option>
+                <option value="1">Gauss-Jordan</option>
+                <option value="2">Gauss-Seidel</option>
+                <option value="3">LU decomposition</option>
+                <option value="4">Jacobi Iterations</option>
+            </select>
+        </div>
+        
+        
+    </div>
+    
+
+    <p></p>
+    <div class="Boxes">
+
+        <div class="tBoxes">
+            <div class="textBOX">
+            
+                <textarea name="equations" id="textBox" class="box" cols="30" rows="10" placeholder="Enter Your Equations"></textarea>
+            </div>
+        
+            
+        
+        </div>
+        <div class="intial" >
+            <div> 
+                <textarea name="equations" id="intial" class="box"  placeholder="Enter Your intials"></textarea>
+            </div>
+            <div class="choices">
+                <div class="LU-type" id="LU-type" >
+                    <label for="LU-type" style="text-align: left;">Choose LU Decompostion type:</label>
+                    <select name="LU-type" id="LU-type-choice"  class="CustomSelector">
+                    <option value="0">DooLittle Form</option>
+                    <option value="1">Crout Form</option>
+                    </select>
+                </div>
+                <div class="iterations" id="iterations">
+                    <label for="LU-type" style="text-align: left;">Enter Number of iterations:</label>
+                    <input type="number" name="lol" id="maxIterations" class="CustomSelector textSelector ">
+                </div>
+                <div class="error" id="Error">
+                    <label for="LU-type" style="text-align: left;">Enter Absolute Error:</label>
+                    <input type="number" name="lol" id="relError" class="CustomSelector textSelector">    
+                </div>
+
+            </div>
+            
+        </div>
+    </div> 
+    <div class="center" (click)="handleSubmit()">
+        <p>Solve</p>
+    </div> 
+
+        
+    
+
+    </div>
+    
+    <div id="final" class="finalDiv">
+        <span id="final0"></span>
+        <span id="final1"></span>
+        <span id="final2"></span>
+        <span id="final3"></span>
+        <span id="final4"></span>
+        <span id="final5"></span>
+        <span id="runTime"></span>
+
+    </div>
+
+    <div align=center class="steps hide" id ="steps" >
+        Steps    
+    </div>
+    <div align=center class="matDiv">
+        <div class= "row2">
+            <div class="rowDiv">
+                <span class="hide" id="span0">L =</span>
+                <table class="matrix hide" id= "mat0"></table>
+                </div>
+                <div class="rowDiv">
+                <span class="hide" id="span1"> U = </span>
+                <table class="matrix hide"  id= "mat1"></table>
+                </div>
+        </div>
+        <div class="row2">
+            <div class="rowDiv">
+                <span class="hide"  id="span2">Y = </span>
+                <table class="matrix hide"  id= "mat2">  
+                </table>
+        </div>
+    </div>
+
+    <div align=center class="gdiv">
+        <table class="matrix hide"  id= "mat0G"></table>  
+        <table class="matrix hide"  id= "mat1G"></table>
+        <table class="matrix hide"  id= "mat2G"></table>
+        <table class="matrix hide"  id= "mat3G"></table>  
+        <table class="matrix hide"  id= "mat4G"></table>
+        <table class="matrix hide"  id= "mat5G"></table>             
+        <table class="matrix hide"  id= "mat6G"></table>  
+        <table class="matrix hide"  id= "mat7G"></table>
+        <table class="matrix hide"  id= "mat8G"></table>
+        <table class="matrix hide"  id= "mat9G"></table>  
+        <table class="matrix hide"  id= "mat10G"></table>
+        <table class="matrix hide"  id= "mat11G"></table>             
+        <table class="matrix hide"  id= "mat12G"></table>       
+        <table class="matrix hide"  id= "mat13G"></table>
+        <table class="matrix hide"  id= "mat14G"></table>
+        <table class="matrix hide"  id= "mat15G"></table>  
+        <table class="matrix hide"  id= "mat16G"></table>
+        <table class="matrix hide"  id= "mat17G"></table>
+        <table class="matrix hide"  id= "mat18G"></table>  
+        <table class="matrix hide"  id= "mat19G"></table>
+        <table class="matrix hide"  id= "mat20G"></table>             
+        <table class="matrix hide"  id= "mat21G"></table>  
+        <table class="matrix hide"  id= "mat22G"></table>
+        <table class="matrix hide"  id= "mat23G"></table>
+        <table class="matrix hide"  id= "mat24G"></table>  
+        <table class="matrix hide"  id= "mat25G"></table>
+        <table class="matrix hide"  id= "mat26G"></table>             
+        <table class="matrix hide"  id= "mat27G"></table>       
+        <table class="matrix hide"  id= "mat28G"></table>
+        <table class="matrix hide"  id= "mat29G"></table>
+        <table class="matrix hide"  id= "mat30G"></table>
+
+    </div>
+<div>
+

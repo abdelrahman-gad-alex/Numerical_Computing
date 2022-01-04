@@ -1,0 +1,235 @@
+.body{
+    
+    margin: auto;
+    width: 80%;
+    height: 600px;
+    
+}
+ 
+
+#textBox{
+    width: 400px ;
+    height: 200px;
+    resize: none;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    outline: none;
+    margin-left: 100%;/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+    border: 5px solid #030027;
+    padding: 10px;
+    background-color: #a53153;
+    border-radius: 15px;
+    font-size: x-large;
+    margin-bottom: 20px;
+    color: white;
+}
+.intial {
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+#intial{
+    width: 100px;
+    height:200px;
+    padding: 10px;
+    border: 5px solid #030027;
+    background-color: #a53153;
+    border-radius: 15px;
+    font-size: x-large;
+    overflow:auto;
+    color: white;
+    margin-right : 20px;
+    margin-left : 50px;
+    resize: none;
+    display: none;/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
+}
+
+
+.selectors{
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+
+}
+.CustomSelector {
+    border-radius:50px ;
+    width: 200px;
+    height: 40px;
+    margin-bottom: 20px;
+    border: 2px solid #030027;
+
+}
+.textSelector{
+    width: 196px;
+    height: 36px;
+ 
+}
+#mSelector , #pSelector {
+    float:left;
+    display:flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+    
+.textBOX{    
+    display:flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+  
+  .Boxes{
+      display: flex;
+      flex-flow: row nowrap;
+      width :900px;
+      justify-content: space-between;
+      
+  }
+  .center{
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    background-color: #fff;
+    border-radius: 24px;
+    height: 30px;
+    width :100px;
+    margin: 50px auto;
+    align-items: center;
+    padding-top: 1px;
+    padding-bottom: 20px;
+}
+.center p{
+    font-size: 17px;
+    font-weight: bold;
+}
+.center:hover{
+    background-color: #fafafb;
+    box-shadow: 0px 1px 3px 0 rgba(60, 64, 67, 0.3), 0px 4px 8px 3px rgba(60,64,67,0.15);
+    cursor: pointer;
+}
+.center2{
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    background-color: #fff;
+    border-radius: 24px;
+    height: 30px;
+    width :120px;
+    margin: 50px auto;
+    align-items: center;
+    padding-top: 1px;
+    padding-bottom: 20px;
+}
+.center2 p{
+    font-size: 17px;
+    font-weight: bold;
+}
+.center2:hover{
+    background-color: #fafafb;
+    box-shadow: 0px 1px 3px 0 rgba(60, 64, 67, 0.3), 0px 4px 8px 3px rgba(60,64,67,0.15);
+    cursor: pointer;
+}
+
+    ::placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  
+.LU-type{
+    display:none;/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}  
+.iterations{
+    display: none;/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.error{
+    display: none;/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}  
+
+
+
+
+.matDiv{
+    margin:auto;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+.finalDiv {
+    margin:auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+.finalDiv span{
+    flex: 40%; /* or - flex: 0 50% - or - flex-basis: 50% - */
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+  } 
+.steps{
+    font-size: 50px;
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+  
+.matDiv span{
+font-size: 50px;
+text-align: center;
+margin-bottom: 20px;
+}
+.row2{
+    display: flex;
+    flex-flow: row  wrap;
+    justify-content:space-around;
+
+}
+.rowDiv{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.matrix {
+    position: relative;
+    font-size: 25px;
+    text-align: center;
+    border-spacing:10px 0px;
+    font-weight: bold ;
+    margin-bottom: 20px;
+}
+.matrix:before, .matrix:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    border: 1px solid #000;
+    width: 6px;
+    height: 100%;
+}
+.matrix:before {
+    left: -6px;
+    border-right: 0;
+}
+.matrix:after {
+    right: -6px;
+    border-left: 0;
+}
+.hide{
+    display:none;
+}
+
+.gdiv{
+    margin:auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
