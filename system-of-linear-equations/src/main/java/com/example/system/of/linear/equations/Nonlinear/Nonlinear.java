@@ -5,10 +5,16 @@ public class Nonlinear {
 
     public void tryy(){
 
-        String f = "f(x)= -x^2+x+3" ;
-        Bracketing b = new Bracketing() ;
+        try {
+            String f = "f(x)= -x^2+x+3" ;
+            Bracketing b = new Bracketing() ;
 
-        System.out.println("this the try" + b.bisections(f,1,4) );
+            System.out.println("this the try" + b.bisections(f,1,4) );
+
+        }catch (Exception e){
+            System.out.println("error");
+
+        }
 
     }
 }
