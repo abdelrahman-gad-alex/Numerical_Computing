@@ -1,11 +1,18 @@
 package com.example.system.of.linear.equations;
 
+import com.example.system.of.linear.equations.Nonlinear.Bisection;
+//import com.example.system.of.linear.equations.Nonlinear.Bracketing;
 import com.example.system.of.linear.equations.SystemModels.*;
 import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.google.gson.Gson;
+//import com.google.gson.Gson;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import java.util.LinkedList;
 
 
 @RestController
@@ -325,6 +332,31 @@ public class Controller {
         tempHM.put("steps", lu.getSteps());
         tempHM.put("time", lu.getTime());
         return gson.toJson(tempHM);
+    }
+    @PostMapping("/bisection")
+    String solveBisection(@RequestBody String reqParam) throws JSONException
+    {
+        JSONObject jas = new JSONObject(reqParam);
+        int fig = jas.getInt("fig");
+        double EPS = jas.getDouble("EPS");
+        int itr = jas.getInt("itr");
+        String func = jas.getString("func");
+        Bisection bisect = new Bisection();
+        bisect.setEs(EPS);
+        bisect.setMaxIterations(itr);
+        bisect.setNoFigures(fig);
+        double res = bisect.bisections(func);
+        if(!bisect.HasSolution())
+        {
+            return "Invalid";
+        }
+        LinkedList<HashMap<String, Double>> steps = bisect.getSteps();
+        Gson gson = new Gson();
+        HashMap<String, Object> tempHM = new HashMap<String, Object>();
+        tempHM.put("res", res);
+        tempHM.put("steps", steps);
+        String ans = gson.toJson(tempHM);
+        return ans;
     }
 
 
