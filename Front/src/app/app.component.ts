@@ -100,7 +100,7 @@ export class AppComponent {
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
 
         txt=txt.replace(evenNegRegex,"+")
-        txt=txt.replace(oddNegRegex,"+-")
+        txt=txt.replace(oddNegRegex,"-")
 
         this.strEq=txt
         break
