@@ -14,7 +14,7 @@ export class SelectorComponent implements OnInit {
   ngOnInit(): void {
     this.draw(15);
   }
-  fun1(x: number) {return 1/x;  }
+  fun1(x: number) {return Math.tan(x);  }
   fun2(x: number) {return Math.cos(3*x);}
 
  draw(max:number) {
@@ -41,7 +41,7 @@ export class SelectorComponent implements OnInit {
  ctx.beginPath();
  ctx.lineWidth = 2;
  ctx.strokeStyle = color;
- for (var i=iMin;i<=iMax;i++) {
+ for (var i=iMin;i<=iMax;i+=0.1) {
   xx = dx*i; yy = scale*func(xx/scale);
   if (yy==Infinity||(Math.abs(yy-(scale*func((i-1)/scale)))>1000&&yy*(scale*func((i-1)/scale))<0)){
     ctx.stroke()
