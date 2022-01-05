@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams } from "@angular/common/http";
 import { SelectorComponent } from './selector/selector.component';
 import { requestData } from './requestData';
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -525,8 +526,8 @@ export class AppComponent {
     reqBody.func=this.strEq
     reqBody.EPS=this.getRelativeError();
 
-
-    this.httpclient.post(this.solveBisectionURL,reqBody,{responseType:'text'}).subscribe(response=>{
+    var strBody=JSON.stringify(reqBody)
+    this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
