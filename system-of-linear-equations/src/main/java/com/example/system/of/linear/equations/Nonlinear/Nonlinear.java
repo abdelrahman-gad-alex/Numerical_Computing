@@ -9,7 +9,8 @@ public class Nonlinear {
             String f = "f(x)= -x^2+x+3" ;
             Bracketing b = new Bracketing() ;
 
-            System.out.println("this the try" + b.bisections(f,1,4) );
+            System.out.println("this the try" + b.bisections(f) );
+            System.out.println(b.getSteps().toString() );
 
         }catch (Exception e){
             System.out.println("error");

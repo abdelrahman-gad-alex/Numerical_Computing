@@ -25,36 +25,36 @@ public class Bracketing {
         return steps ;
     }
 
-
-    public double bisections(String function, double xl, double xu){
-        steps = new LinkedList<HashMap<String,Double>>() ;
+    double fx(String function, double x){
         Function f = new Function(function) ;
-        Argument x = new Argument("x = 1") ;
+        Argument x0 = new Argument("x = 1") ;
+        x0.setArgumentValue(x);
+        double fx = round(new Expression("f(x)",f, x0).calculate()) ;
+        return fx ;
+    }
 
 
-        // testing the number of roots
-        x.setArgumentValue(xl);
-        double fl = round(new Expression("f(x)",f, x).calculate()) ;
-        x.setArgumentValue(xu);
-        System.out.print("f(xl)=");
-        System.out.println(fl);
-        double fr =  round(new Expression("f(x)",f, x).calculate()) ;
-        if(fl*fr > 0){  // same sign
-            hasSolution = false ;
+    public double bisections(String function){
+        steps = new LinkedList<HashMap<String,Double>>() ;
+        hasSolution = true ;
+
+        double[] xlxu = xlxu(function) ;
+        if(!hasSolution){
             return -1 ;
         }
+        double xl = xlxu[0] ;
+        double xu = xlxu[1] ;
+
 
         double xr=0 ;
         double ea ;
         for(int i=0 ; i< maxIterations ; i++){
             xr = (xu+xl) /2.0 ;
             System.out.println(xr);
-            ea = Math.abs(xu-xl)/xl ;
+            ea = round(Math.abs(xu-xl)/xl) ;
 
-            x.setArgumentValue(xl);
-            fl = round(new Expression("f(x)",f, x).calculate());
-            x.setArgumentValue(xr);
-            fr = round(new Expression("f(x)",f, x).calculate());
+            double fl = fx(function,xl) ;
+            double fr = fx(function,xr);
 
             update(xl, xu, xr, fr, ea);
 
@@ -102,6 +102,60 @@ public class Bracketing {
         x = x*  Math.pow(10, shift) ;
         x = Double.parseDouble( String.format("%.10g%n",x) ) ;
         return x ;
+    }
+
+    double[] xlxu(String function){
+
+        double x0 = 0 ;
+        double delta = 10 ;
+        double x1 = delta ;
+        double fx0 = fx(function,x0) ;
+        double fx1 = fx(function,x1) ;
+        hasSolution = false ;
+        if(Double.isNaN(fx0) && Double.isNaN(fx1)){
+            return new double[]{0,0} ;
+        }
+
+        for(int i=0 ; i<10000 ; i++){
+            // for positive
+            fx0 = fx(function,x0) ;
+            fx1 = fx(function,x1) ;
+            
+            if(fx0*fx1 < 0){
+                hasSolution = true ;
+                break;
+            }
+            // for negative
+            fx0 = fx(function,x0*-1) ;
+            fx1 = fx(function,x1*-1) ;
+            if(fx0*fx1 < 0){
+                double temp = x0 ;
+                x0 = -1*x1 ;
+                x1 = -1*temp ;
+                hasSolution = true ;
+                break;
+            }
+
+            x0 = x1 ;
+            x1 += delta ;
+        }
+        delta = 1 ;
+        x1 = x0 + delta ;
+
+        for(int i=0 ; i<10000 ; i++){
+            // for positive
+            fx0 = fx(function,x0) ;
+            fx1 = fx(function,x1) ;
+            if(fx0*fx1 < 0){
+                break;
+            }
+            x0 = x1 ;
+            x1 += delta ;
+        }
+
+        return new double[]{x0,x1} ;
+
+
     }
 
 }
