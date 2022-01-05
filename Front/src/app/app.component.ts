@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams } from "@angular/common/http";
-import { Observable } from 'rxjs';
 import { SelectorComponent } from './selector/selector.component';
-
+import { requestData } from './requestData';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +14,7 @@ export class AppComponent {
   solveSeidelURL="http://localhost:8080/controller/gaussSeidel"
   solveJacobiURL="http://localhost:8080/controller/jacobi"
   solveLUURL="http://localhost:8080/controller/lu"
+  solveBisectionURL="http://localhost:8080/controller/bisection"
 
 
   title = 'Front';
@@ -31,53 +31,83 @@ export class AppComponent {
   receiveInput(){
     var type = this.getMethodType();
     var txt :string = this.getEquations()
-    //regex to remove spaces and *
-    var multiplyRegex=/\*| /g
-    txt=txt.replace(multiplyRegex,"")
     var dividedTxt=txt.split(/\n/)
     var numberOfequations:number = dividedTxt.length
     this.numberOfeq=numberOfequations
-    //regex to check the invalid format charcters in the string
-    var groupLettersRegex =/[a-zA-Z]\d*\.?[a-zA-Z]|\(|\)|>|<|,/g
-    if(groupLettersRegex.test(txt)===true)
-    { 
-      this.errorAlert(0)
-      return;
-    }
-    for(let i=0;i<numberOfequations;i++){
-       if(this.validateTwoSides(dividedTxt[i])===false) {
+
+    switch(type){
+      case "Gauss-Elimination":
+      case "Gauss-Jordan":
+      case "Gauss-Seidel":
+      case "LU-decomposition":
+      case "Jacobi-Iterations":
+      //regex to check the invalid format charcters in the string
+      var groupLettersRegex =/[a-zA-Z]\d*\.?[a-zA-Z]|\(|\)|>|<|,/g
+      if(groupLettersRegex.test(txt)===true)
+      { 
         this.errorAlert(0)
-        return
+        return;
       }
-       var sides=dividedTxt[i].split(/=/)
-       var LHS=sides[0]
-       //checks if there is a free term on the left hand 
-       var freeTermDetectionRegex=/(?<![a-zA-z\d])\d+\.?\d*?(?![\.\*a-zA-z\d])/gm
-       if(freeTermDetectionRegex.test(LHS) === true) {
+      for(let i=0;i<numberOfequations;i++){
+        if(this.validateTwoSides(dividedTxt[i])===false) {
           this.errorAlert(0)
           return
-       }
+        }
+        var sides=dividedTxt[i].split(/=/)
+        var LHS=sides[0]
+        //checks if there is a free term on the left hand 
+        var freeTermDetectionRegex=/(?<![a-zA-z\d])\d+\.?\d*?(?![\.\*a-zA-z\d])/gm
+        if(freeTermDetectionRegex.test(LHS) === true) {
+            this.errorAlert(0)
+            return
+        }
 
-       //regex to prepare the input before sending to the back
+        //regex to prepare the input before sending to the back
+          var evenNegRegex = /(?<!-)((?:--)+)(?!-)/g
+          var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
+          var insertOneToLonelyRegex=/(?<![\d\*])(?=[a-zA-Z])/g
+          var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
+          
+          dividedTxt[i]= dividedTxt[i].replace(evenNegRegex,"+")
+          dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"+-")
+          dividedTxt[i]=dividedTxt[i].replace(insertOneToLonelyRegex,"1")
+          dividedTxt[i]=dividedTxt[i].replace(insertTimesRegex,"*");
+          while(dividedTxt[i].includes("+"))
+          {
+            dividedTxt[i]=dividedTxt[i].replace("+","<");
+          }
+          dividedTxt[i]=dividedTxt[i].replace("=", ">")
+          if(i<numberOfequations) this.strEq=this.strEq+dividedTxt[i]+"\n"
+          else this.strEq=this.strEq+dividedTxt[i]
+
+      }
+      this.strEq=this.putComma(this.strEq)
+
+
+
+        break;
+      case "Bisection":
+      case "False-Position":
+      case "Fixed Point":
+      case "Newton-Raphson":
+      case "Secant Method":
+        //must be one equation
+        if(this.numberOfeq!==1)
+            this.errorAlert(0);
+        
         var evenNegRegex = /(?<!-)((?:--)+)(?!-)/g
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
-        var insertOneToLonelyRegex=/(?<![\d\*])(?=[a-zA-Z])/g
-        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
-        
-        dividedTxt[i]= dividedTxt[i].replace(evenNegRegex,"+")
-        dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"+-")
-        dividedTxt[i]=dividedTxt[i].replace(insertOneToLonelyRegex,"1")
-        dividedTxt[i]=dividedTxt[i].replace(insertTimesRegex,"*");
-        while(dividedTxt[i].includes("+"))
-        {
-          dividedTxt[i]=dividedTxt[i].replace("+","<");
-        }
-        dividedTxt[i]=dividedTxt[i].replace("=", ">")
-        if(i<numberOfequations) this.strEq=this.strEq+dividedTxt[i]+"\n"
-        else this.strEq=this.strEq+dividedTxt[i]
+
+        txt=txt.replace(evenNegRegex,"+")
+        txt=txt.replace(oddNegRegex,"+-")
+
+        this.strEq=txt
+        break
 
     }
-    this.strEq=this.putComma(this.strEq)
+
+
+    //SENDING REQUESTS SWITCH
     switch(type){
       case "Gauss-Elimination":
         this.solveAndReceiveAnswerGauss()
@@ -94,6 +124,14 @@ export class AppComponent {
       case "Jacobi-Iterations":
         this.solveAndReceiveAnswerJacobi()
         break
+      case "Bisection":
+        this.solveAndReceiveAnswerBisection()
+        break;
+      case "False-Position":
+      case "Fixed Point":
+      case "Newton-Raphson":
+      case "Secant Method":
+
       default:
         break
     }
@@ -132,6 +170,21 @@ export class AppComponent {
       case 4:
         choice="Jacobi-Iterations"
         break
+      case 5:
+        choice="Bisection"
+        break;
+      case 6:
+        choice="False-Position"
+        break;
+      case 7:
+        choice="Fixed Point"
+        break;
+      case 8:
+        choice="Newton-Raphson"
+        break;
+      case 9:
+        choice="Secant Method"
+        break;
       default:
         break
     }
@@ -170,8 +223,7 @@ export class AppComponent {
  
 
 
-  /**
-   * 
+  /* 
    * @returns max number of iteration
    */
   getMaxNumberOfIterations():number{
@@ -180,8 +232,7 @@ export class AppComponent {
   }
 
 
-  /**
-   * 
+  /*
    * @returns relative error to check in the operations
    */
   getRelativeError():number{
@@ -190,8 +241,7 @@ export class AppComponent {
   }
   
 
-  /**
-   * 
+  /*
    * @returns initial conditions from its text area
    */
   getInitialConditions():string{
@@ -222,6 +272,10 @@ export class AppComponent {
         message="System has infinite number of solutions"
         break;
 
+
+      case 5:
+        message="Error"
+        break
       default:
         message="Error"
         break
@@ -230,16 +284,6 @@ export class AppComponent {
   }
 
 
-  /**
-   * checks that the equation is in the form of an expression containing any character of letter in the LHS 
-   * and checks that the right hand side is only numbers
-   * @param txt 
-   * @returns boolean
-   */
-  validateTwoSides(txt:string):boolean{
-    let regexp: RegExp = /^.+=\d+\.?\d*$/gm;
-    return regexp.test(txt)
-  }
 
 
   /**
@@ -263,12 +307,15 @@ export class AppComponent {
     return res
   }
 
+  validateTwoSides(txt:string):boolean{
+    let regexp: RegExp = /^.+=\d+\.?\d*$/gm;
+    return regexp.test(txt)
+  }
   
 
   /**
    * the next equations sends all the needed requests to the backend
    */
-
 
 
   solveAndReceiveAnswerGauss(){
@@ -469,6 +516,26 @@ export class AppComponent {
             })
   }
   
+
+
+  solveAndReceiveAnswerBisection(){
+    var reqBody:requestData=new requestData()
+    reqBody.fig=this.getPrecision()
+    reqBody.itr=this.getMaxNumberOfIterations()
+    reqBody.func=this.strEq
+    reqBody.EPS=this.getRelativeError();
+
+
+    this.httpclient.post(this.solveBisectionURL,reqBody,{responseType:'text'}).subscribe(response=>{
+      if(response==='Invalid'){
+        this.errorAlert(5)
+      } else {
+        console.log(response)
+      }
+    })
+
+
+  }
 }
 
 
