@@ -5,17 +5,35 @@ import org.mariuszgromada.math.mxparser.* ;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Bracketing {
+public class Bisection {
 
     double es = 0.00001 ;
     int noFigures = 0 ;
     int maxIterations = 50 ;
     LinkedList<HashMap<String,Double>> steps ;
     boolean hasSolution ;
+    double[] xlxu = new double[]{0,0} ;
 
-    public void setEs(double es) {this.es = es;}
-    public void setNoFigures(int noFigures) {this.noFigures = noFigures;}
-    public void setMaxIterations(int maxIterations) {this.maxIterations = maxIterations;}
+
+    public Bisection setEs(double es) {
+        this.es = es;
+        return this ;
+    }
+    public Bisection setNoFigures(int noFigures) {
+        this.noFigures = noFigures;
+        return this ;
+
+    }
+    public Bisection setMaxIterations(int maxIterations) {
+        this.maxIterations = maxIterations;
+        return this ;
+    }
+    public Bisection setxlxu(double xl, double xu){
+        xlxu[0] = xl ;
+        xlxu[1] = xu ;
+        return this ;
+    }
+
 
     public boolean HasSolution(){
         return hasSolution ;
@@ -105,6 +123,9 @@ public class Bracketing {
     }
 
     double[] xlxu(String function){
+        if(xlxu[0] != 0 || xlxu[1] != 0){
+            return xlxu ;
+        }
 
         double x0 = 0 ;
         double delta = 10 ;
@@ -116,11 +137,11 @@ public class Bracketing {
             return new double[]{0,0} ;
         }
 
-        for(int i=0 ; i<10000 ; i++){
+        for(int i=0 ; i<1000 ; i++){
             // for positive
             fx0 = fx(function,x0) ;
             fx1 = fx(function,x1) ;
-            
+
             if(fx0*fx1 < 0){
                 hasSolution = true ;
                 break;
@@ -142,7 +163,10 @@ public class Bracketing {
         delta = 1 ;
         x1 = x0 + delta ;
 
-        for(int i=0 ; i<10000 ; i++){
+        if(!hasSolution){
+            return new double[]{0,0} ;
+        }
+        for(int i=0 ; i<1000 ; i++){
             // for positive
             fx0 = fx(function,x0) ;
             fx1 = fx(function,x1) ;
