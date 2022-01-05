@@ -26,6 +26,11 @@
                 <option value="2">Gauss-Seidel</option>
                 <option value="3">LU decomposition</option>
                 <option value="4">Jacobi Iterations</option>
+                <option value="5">Bisection</option>
+                <option value="6">False-Position</option>
+                <option value="7">Fixed point</option>
+                <option value="8">Newton-Raphson</option>
+                <option value="9">Secant Method</option>
             </select>
         </div>
         
@@ -58,7 +63,7 @@
                     </select>
                 </div>
                 <div class="iterations" id="iterations">
-                    <label for="LU-type" style="text-align: left;">Enter Number of iterations:</label>
+                    <label for="LU-type" style="text-align: left;">Enter Max Number of iterations:</label>
                     <input type="number" name="lol" id="maxIterations" class="CustomSelector textSelector ">
                 </div>
                 <div class="error" id="Error">
@@ -144,6 +149,10 @@
         <table class="matrix hide"  id= "mat28G"></table>
         <table class="matrix hide"  id= "mat29G"></table>
         <table class="matrix hide"  id= "mat30G"></table>
+
+    </div>
+    <div>
+        <canvas id="canvas" width="820" height="820"></canvas>
 
     </div>
 <div>
