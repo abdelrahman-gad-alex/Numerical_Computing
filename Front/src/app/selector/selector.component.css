@@ -61,7 +61,8 @@
     height: 40px;
     margin-bottom: 20px;
     border: 2px solid #030027;
-
+    background-color: #a53153;
+    color: #fff;
 }
 .textSelector{
     width: 196px;
@@ -232,4 +233,8 @@ margin-bottom: 20px;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+}
+.choices{
+    display: flex;
+    flex-direction: row-reverse;
 }

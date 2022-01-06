@@ -62,13 +62,27 @@
                     <option value="1">Crout Form</option>
                     </select>
                 </div>
-                <div class="iterations" id="iterations">
-                    <label for="LU-type" style="text-align: left;">Enter Max Number of iterations:</label>
-                    <input type="number" name="lol" id="maxIterations" class="CustomSelector textSelector ">
+                <div class="block1">
+                    <div class="iterations" id="iterations">
+                        <label for="LU-type" style="text-align: left;">Enter Max Number of iterations:</label>
+                        <input type="number" name="lol" id="maxIterations" class="CustomSelector textSelector ">
+                    </div>
+                    <div class="error" id="Error">
+                        <label for="LU-type" style="text-align: left;">Enter Epsilon:</label>
+                        <input type="number" name="lol" id="relError" class="CustomSelector textSelector">    
+                    </div>
+    
                 </div>
-                <div class="error" id="Error">
-                    <label for="LU-type" style="text-align: left;">Enter Absolute Error:</label>
-                    <input type="number" name="lol" id="relError" class="CustomSelector textSelector">    
+                <div class="block2">
+                    <div class="iterations" id="Lower">
+                        <label for="LU-type" style="text-align: left;">Enter Lower:</label>
+                        <input type="number" name="lol" id="inpLower" class="CustomSelector textSelector ">
+                    </div>
+                    <div class="error" id="Upper">
+                        <label for="LU-type" style="text-align: left;">Enter Upper:</label>
+                        <input type="number" name="lol" id="inpUpper" class="CustomSelector textSelector">    
+                    </div>
+    
                 </div>
 
             </div>

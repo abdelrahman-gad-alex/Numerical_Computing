@@ -522,11 +522,22 @@ export class AppComponent {
   solveAndReceiveAnswerBisection(){
     var reqBody:requestData=new requestData()
     reqBody.fig=this.getPrecision()
-    reqBody.itr=this.getMaxNumberOfIterations()
+    if(this.getMaxNumberOfIterations()){
+      reqBody.itr=this.getMaxNumberOfIterations()
+    }
+    else{
+      reqBody.itr=50
+    }
+
     reqBody.func=this.strEq
     reqBody.EPS=this.getRelativeError();
+    if(this.getRelativeError())
+    reqBody.EPS=this.getRelativeError()
 
+    else
+    reqBody.EPS=0.00001
     var strBody=JSON.stringify(reqBody)
+    console.log(strBody)
     this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)

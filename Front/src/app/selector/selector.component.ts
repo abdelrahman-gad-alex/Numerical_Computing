@@ -13,10 +13,12 @@ export class SelectorComponent implements OnInit {
   
   ngOnInit(): void {
     this.draw(15);
+    console.log(this.xLower+"  ,  "+this.xUpper)
   }
-  fun1(x: number) {return Math.tan(x);  }
+  fun1(x: number) {return Math.pow(x,2);  }
   fun2(x: number) {return Math.cos(3*x);}
-
+  xUpper?:number
+  xLower?:number
  draw(max:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
  if (null==canvas || !canvas.getContext) return;
@@ -30,7 +32,6 @@ export class SelectorComponent implements OnInit {
 
  this.showAxes(ctx!,axes);
  this.funGraph(ctx!,axes,this.fun1,"rgb(11,153,11)",1); 
- this.funGraph(ctx!,axes,this.fun2,"rgb(66,44,255)",2);
 
 }
 
@@ -47,10 +48,47 @@ export class SelectorComponent implements OnInit {
     ctx.stroke()
     ctx.beginPath()
   }
+  else if (i==iMin) {
+    if(yy>=0&&yy<=0.05){console.log ("L : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
+    else if(yy<=0&&yy>=-0.05){console.log ("U : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
+ctx.moveTo(x0+xx,y0-yy);}
+  else {
+    if(yy>=0&&yy<=0.5 ){
+      if(yy*(scale*func((i+0.1)/scale))<0){
+        if (this.xLower==undefined){
+        this.xLower=i/scale
+        this.xUpper=(i+0.1)
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      else if(yy*((scale*func((i-0.1)/scale)))<0){
+        if (this.xLower==undefined){
+        this.xLower=(i-0.1)/scale
+        this.xUpper=(i)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+    }
+    else if(yy<=0&&yy>=-0.5){
+      
+      if(yy*(scale*func((i+0.1)/scale))<0){
+        if (this.xLower==undefined){
+        this.xLower=i/scale
+        this.xUpper=(i+0.1)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      else if(yy*((scale*func((i-0.1)/scale)))<0){
+        if (this.xLower==undefined){
+        this.xLower=(i-0.1)/scale
+        this.xUpper=(i)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      
+    }
+  ctx.lineTo(x0+xx,y0-yy);}
   
-  else if (i==iMin) ctx.moveTo(x0+xx,y0-yy);
-  else ctx.lineTo(x0+xx,y0-yy);
-
  }
  ctx.stroke();
 }
@@ -98,6 +136,8 @@ export class SelectorComponent implements OnInit {
     switch(currentMode){
       case 0:
       case 1:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
@@ -107,6 +147,8 @@ export class SelectorComponent implements OnInit {
       
       case 2:
       case 4:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
         document.getElementById("iterations")!.style.display = "flex";
         document.getElementById("intial")!.style.display = "flex";  
@@ -115,6 +157,8 @@ export class SelectorComponent implements OnInit {
         break;
   
       case 3:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
@@ -124,11 +168,27 @@ export class SelectorComponent implements OnInit {
         
       case 5:
       case 6:
+        document.getElementById("Lower")!.style.display = "flex";
+        document.getElementById("Upper")!.style.display = "flex";
+        document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+
+        document.getElementById("iterations")!.style.display = "flex";
+        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
+        document.getElementById("intial")!.style.display = "none";  
+        document.getElementById("LU-type")!.style.display = "none";      
+        document.getElementById("textBox")!.style.marginLeft= "0%";        
+        break;      
       case 7:
       case 8:
       case 9:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+
         document.getElementById("iterations")!.style.display = "flex";
+        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "none";      
         document.getElementById("textBox")!.style.marginLeft= "0%";        

@@ -356,6 +356,7 @@ public class Controller {
         tempHM.put("res", res);
         tempHM.put("steps", steps);
         String ans = gson.toJson(tempHM);
+        System.out.println(steps);
         return ans;
     }
 
