@@ -46,8 +46,11 @@ public class FalsePosition {
         Function f = new Function(function) ;
         Argument x0 = new Argument("x = 1") ;
         x0.setArgumentValue(x);
-        double fx = round(new Expression("f(x)",f, x0).calculate()) ;
-        return fx ;
+        double fx = new Expression("f(x)",f, x0).calculate() ;
+        if(Double.isNaN(fx))
+            return fx ;
+        else
+            return round(fx) ;
     }
 
 
