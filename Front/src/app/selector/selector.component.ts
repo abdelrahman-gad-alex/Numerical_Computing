@@ -12,44 +12,88 @@ export class SelectorComponent implements OnInit {
   constructor() {}
   
   ngOnInit(): void {
-    this.draw();
+    this.draw(15);
+    console.log(this.xLower+"  ,  "+this.xUpper)
   }
-  fun1(x: number) {return 1/x;  }
+  fun1(x: number) {return Math.pow(x,2);  }
   fun2(x: number) {return Math.cos(3*x);}
-
- draw() {
+  xUpper?:number
+  xLower?:number
+ draw(max:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
  if (null==canvas || !canvas.getContext) return;
 
  var axes:any={}, ctx=canvas.getContext("2d");
  axes.x0 = .5 + .5*canvas.width;  // x0 pixels from left to x=0
  axes.y0 = .5 + .5*canvas.height; // y0 pixels from top to y=0
- axes.scale = 20;                 // 40 pixels from x=0 to x=1
+ axes.scale = (canvas.width-20)/(2*max);  
+ axes.max = max               // 40 pixels from x=0 to x=1
  axes.doNegativeX = true;
 
  this.showAxes(ctx!,axes);
  this.funGraph(ctx!,axes,this.fun1,"rgb(11,153,11)",1); 
- this.funGraph(ctx!,axes,this.fun2,"rgb(66,44,255)",2);
 
 }
 
  funGraph (ctx: { canvas: { width: number; }; beginPath: () => void; lineWidth: any; strokeStyle: any; moveTo: (arg0: any, arg1: number) => void; lineTo: (arg0: any, arg1: number) => void; stroke: () => void; },axes: { x0?: any; y0?: any; scale?: any; doNegativeX?: any; },func: { (x: any): number; (x: any): number; (arg0: number): number; },color: string,thick: number) {
- var xx, yy, dx=4, x0=axes.x0, y0=axes.y0, scale=axes.scale;
+ var xx, yy, dx=1, x0=axes.x0, y0=axes.y0, scale=axes.scale;
  var iMax = Math.round((ctx.canvas.width-x0)/dx);
  var iMin = axes.doNegativeX ? Math.round(-x0/dx) : 0;
  ctx.beginPath();
  ctx.lineWidth = 2;
  ctx.strokeStyle = color;
-
- for (var i=iMin;i<=iMax;i++) {
+ for (var i=iMin;i<=iMax;i+=0.1) {
   xx = dx*i; yy = scale*func(xx/scale);
-  if (i==iMin) ctx.moveTo(x0+xx,y0-yy);
-  else ctx.lineTo(x0+xx,y0-yy);
+  if (yy==Infinity||(Math.abs(yy-(scale*func((i-1)/scale)))>1000&&yy*(scale*func((i-1)/scale))<0)){
+    ctx.stroke()
+    ctx.beginPath()
+  }
+  else if (i==iMin) {
+    if(yy>=0&&yy<=0.05){console.log ("L : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
+    else if(yy<=0&&yy>=-0.05){console.log ("U : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
+ctx.moveTo(x0+xx,y0-yy);}
+  else {
+    if(yy>=0&&yy<=0.5 ){
+      if(yy*(scale*func((i+0.1)/scale))<0){
+        if (this.xLower==undefined){
+        this.xLower=i/scale
+        this.xUpper=(i+0.1)
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      else if(yy*((scale*func((i-0.1)/scale)))<0){
+        if (this.xLower==undefined){
+        this.xLower=(i-0.1)/scale
+        this.xUpper=(i)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+    }
+    else if(yy<=0&&yy>=-0.5){
+      
+      if(yy*(scale*func((i+0.1)/scale))<0){
+        if (this.xLower==undefined){
+        this.xLower=i/scale
+        this.xUpper=(i+0.1)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      else if(yy*((scale*func((i-0.1)/scale)))<0){
+        if (this.xLower==undefined){
+        this.xLower=(i-0.1)/scale
+        this.xUpper=(i)/scale
+        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
+        }
+      }
+      
+    }
+  ctx.lineTo(x0+xx,y0-yy);}
+  
  }
  ctx.stroke();
 }
 
- showAxes(ctx: CanvasRenderingContext2D,axes: { x0?: any; y0?: any; doNegativeX?: any; scale?: any; }) {
+ showAxes(ctx: CanvasRenderingContext2D,axes: { x0?: any; y0?: any; doNegativeX?: any; scale?: any; max?: any; }) {
  var x0=axes.x0, w=ctx.canvas.width;
  var y0=axes.y0, h=ctx.canvas.height;
  var scale=axes.scale;
@@ -60,7 +104,7 @@ export class SelectorComponent implements OnInit {
  ctx.moveTo(x0,0);    ctx.lineTo(x0,h);  // Y axis
  ctx.stroke();
 
- for (let i = -(800/(2*scale)) ;i<=(800/(2*scale));i++){
+ for (let i = -(axes.max) ;i<=(axes.max);i++){
     ctx!.fillText(i.toString(), (ctx.canvas.width / 2) + (scale*i), (ctx.canvas.height / 2) + 10);
     if(i!=0){
       ctx!.beginPath();
@@ -92,6 +136,8 @@ export class SelectorComponent implements OnInit {
     switch(currentMode){
       case 0:
       case 1:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
@@ -101,6 +147,8 @@ export class SelectorComponent implements OnInit {
       
       case 2:
       case 4:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
         document.getElementById("iterations")!.style.display = "flex";
         document.getElementById("intial")!.style.display = "flex";  
@@ -109,6 +157,8 @@ export class SelectorComponent implements OnInit {
         break;
   
       case 3:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
@@ -118,11 +168,27 @@ export class SelectorComponent implements OnInit {
         
       case 5:
       case 6:
+        document.getElementById("Lower")!.style.display = "flex";
+        document.getElementById("Upper")!.style.display = "flex";
+        document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+
+        document.getElementById("iterations")!.style.display = "flex";
+        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
+        document.getElementById("intial")!.style.display = "none";  
+        document.getElementById("LU-type")!.style.display = "none";      
+        document.getElementById("textBox")!.style.marginLeft= "0%";        
+        break;      
       case 7:
       case 8:
       case 9:
+        document.getElementById("Lower")!.style.display = "none";
+        document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+
         document.getElementById("iterations")!.style.display = "flex";
+        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "none";      
         document.getElementById("textBox")!.style.marginLeft= "0%";        

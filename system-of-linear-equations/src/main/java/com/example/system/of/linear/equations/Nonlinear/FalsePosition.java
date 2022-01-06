@@ -1,33 +1,33 @@
 package com.example.system.of.linear.equations.Nonlinear;
-
 import org.mariuszgromada.math.mxparser.* ;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Bisection {
+
+public class FalsePosition {
 
     double es = 0.00001 ;
     int noFigures = 0 ;
     int maxIterations = 50 ;
     LinkedList<HashMap<String,Double>> steps ;
-    boolean hasSolution = true ;
+    boolean hasSolution ;
     double[] xlxu = new double[]{0,0} ;
 
 
-    public Bisection setEs(double es) {
+    public FalsePosition setEs(double es) {
         this.es = es;
         return this ;
     }
-    public Bisection setNoFigures(int noFigures) {
+    public FalsePosition setNoFigures(int noFigures) {
         this.noFigures = noFigures;
         return this ;
 
     }
-    public Bisection setMaxIterations(int maxIterations) {
+    public FalsePosition setMaxIterations(int maxIterations) {
         this.maxIterations = maxIterations;
         return this ;
     }
-    public Bisection setxlxu(double xl, double xu){
+    public FalsePosition setxlxu(double xl, double xu){
         xlxu[0] = xl ;
         xlxu[1] = xu ;
         return this ;
@@ -54,7 +54,7 @@ public class Bisection {
     }
 
 
-    public double bisections(String function){
+    public double falsePosition(String function){
         steps = new LinkedList<HashMap<String,Double>>() ;
         hasSolution = true ;
 
@@ -69,12 +69,14 @@ public class Bisection {
         double xr=0 ;
         double ea ;
         for(int i=0 ; i< maxIterations ; i++){
-            xr = round( (xu+xl) /2.0) ;
-            System.out.println(xr);
-            ea = round(Math.abs(xu-xl)/xl) ;
-
             double fl = fx(function,xl) ;
+            double fu = fx(function,xu) ;
+            double xrprev = xr ;
+            xr = round( (xl*fu-xu*fl)/(fu-fl)  ) ;
             double fr = fx(function,xr);
+            System.out.println(xr);
+
+            ea = round(Math.abs(xr-xrprev)/xr) ;
             update(xl, xu, xr, fr, ea);
 
             if(fl ==0){
@@ -85,7 +87,7 @@ public class Bisection {
                 return xu ;
             }
 
-            if(fl*fr <0 ){ // test
+            if(fr*fl < 0 ){ // test
                 xu = xr ;
             }else {
                 xl = xr ;
