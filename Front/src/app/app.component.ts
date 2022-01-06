@@ -93,7 +93,7 @@ export class AppComponent {
       case "Newton-Raphson":
       case "Secant Method":
         //must be one equation
-        var fxRegex=/^f\(x\)=[a-z\d^+]+(?!=)$/gm
+        var fxRegex=/^f\(x\)=[a-z\d^+()]+(?!=)$/gm
         if(this.numberOfeq!==1 || !fxRegex.test(txt)){
           this.errorAlert(0);
           return
