@@ -70,7 +70,7 @@ export class AppComponent {
           var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
           
           dividedTxt[i]= dividedTxt[i].replace(evenNegRegex,"+")
-          dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"+-")
+          dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"-")
           dividedTxt[i]=dividedTxt[i].replace(insertOneToLonelyRegex,"1")
           dividedTxt[i]=dividedTxt[i].replace(insertTimesRegex,"*");
           while(dividedTxt[i].includes("+"))
@@ -100,7 +100,7 @@ export class AppComponent {
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
 
         txt=txt.replace(evenNegRegex,"+")
-        txt=txt.replace(oddNegRegex,"+-")
+        txt=txt.replace(oddNegRegex,"-")
 
         this.strEq=txt
         break
