@@ -93,18 +93,65 @@ export class AppComponent {
       case "Newton-Raphson":
       case "Secant Method":
         //must be one equation
-        if(this.numberOfeq!==1)
-            this.errorAlert(0);
+        var fxRegex=/^f\(x\)=[a-z\d^+]+(?!=)$/gm
+        if(this.numberOfeq!==1 || fxRegex.test(txt)){
+          this.errorAlert(0);
+          return
+        }
+            
         
         var evenNegRegex = /(?<!-)((?:--)+)(?!-)/g
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
-
+        var insertOneToLonelyRegex=/(?<![\d\*])(?=[a-zA-Z])/g
+        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
         txt=txt.replace(evenNegRegex,"+")
         txt=txt.replace(oddNegRegex,"-")
+        txt=txt.replace(insertOneToLonelyRegex,"1")
+        txt=txt.replace(insertTimesRegex,"*");
 
         this.strEq=txt
+        var validating=validTs(this.strEq)
+        if(validating==="Invalid"){
+          this.errorAlert(0)
+          return;
+        }
         break
 
+
+    function validTs(s: string): any
+      {
+        if(!s.startsWith("f(x)="))
+        {
+            return "Invalid"
+        }
+        s = s.substring(s.indexOf("f(x)=")+5)
+        while(s.includes("sin("))
+        {
+            s= s.replace("sin(", "Math.sIn(x)")
+        }
+        while(s.includes("Math.sIn(x)"))
+        {
+            s = s.replace("Math.sIn(x)", "Math.sin(")
+        }
+        while(s.includes("cos("))
+        {
+            s= s.replace("cos(", "Math.sIn(x)")
+        }
+        while(s.includes("Math.sIn(x)"))
+        {
+            s = s.replace("Math.sIn(x)", "Math.cos(")
+        }
+        while(s.includes("e"))
+        {
+            s= s.replace("e", "Math.sIn(x)")
+        }
+        while(s.includes("Math.sIn(x)"))
+        {
+            s = s.replace("Math.sIn(x)", "Math.E")
+        }
+      // s= s.replace("sin(x)", "Math.sin(x)")
+      console.log(s)
+      }
     }
 
 
@@ -222,6 +269,8 @@ export class AppComponent {
 
 
  
+
+  
 
 
   /* 
@@ -532,10 +581,9 @@ export class AppComponent {
     reqBody.func=this.strEq
     reqBody.EPS=this.getRelativeError();
     if(this.getRelativeError())
-    reqBody.EPS=this.getRelativeError()
-
+      reqBody.EPS=this.getRelativeError()
     else
-    reqBody.EPS=0.00001
+      reqBody.EPS=0.00001
     var strBody=JSON.stringify(reqBody)
     console.log(strBody)
     this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
