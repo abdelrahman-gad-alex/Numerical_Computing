@@ -94,7 +94,7 @@ export class AppComponent {
       case "Secant Method":
         //must be one equation
         var fxRegex=/^f\(x\)=[a-z\d^+]+(?!=)$/gm
-        if(this.numberOfeq!==1 || fxRegex.test(txt)){
+        if(this.numberOfeq!==1 || !fxRegex.test(txt)){
           this.errorAlert(0);
           return
         }
