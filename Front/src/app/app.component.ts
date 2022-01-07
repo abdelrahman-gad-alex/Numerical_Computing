@@ -355,15 +355,24 @@ export class AppComponent {
   }
 
   getUpperXguess():number{
-    var n=(<HTMLInputElement>(document.getElementById("inpLower"))).valueAsNumber;
-    return n;
-  }
-  
-  getLowerXguess():number{
     var n=(<HTMLInputElement>(document.getElementById("inpUpper"))).valueAsNumber;
     return n;
   }
   
+  getLowerXguess():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpLower"))).valueAsNumber;
+    return n;
+  }
+  
+  getX1():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpGuessx0"))).valueAsNumber;
+    return n;
+  }
+
+  getX0():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpGuessx-1"))).valueAsNumber;
+    return n;
+  }
 
   /**
    * alerts the user of errors
@@ -481,7 +490,7 @@ export class AppComponent {
     var commaGuess=this.putComma(guess)
     var maxN=this.getMaxNumberOfIterations()
     var tolerance=this.getRelativeError()
-    if(maxN===NaN || tolerance===NaN || guess === null){
+    if(isNaN(maxN)|| isNaN(tolerance) || guess === null){
       this.errorAlert(0)
       return
     }
@@ -580,7 +589,7 @@ export class AppComponent {
     var commaGuess=this.putComma(guess)
     var maxN=this.getMaxNumberOfIterations()
     var tolerance=this.getRelativeError()
-    if(maxN===NaN || tolerance===NaN || guess === null){
+    if(isNaN(maxN)|| isNaN(tolerance) || guess === null){
       this.errorAlert(0)
       return
     }
@@ -628,15 +637,22 @@ export class AppComponent {
 
   solveAndReceiveAnswerBisection(){
     var reqBody:bisection=new bisection()
+    console.log(reqBody)
     reqBody.fig=this.getPrecision()
-    if(this.getMaxNumberOfIterations()!==NaN){
+    console.log("default itr is " +reqBody.itr);
+    console.log(this.getMaxNumberOfIterations());
+    
+
+    if(!isNaN(this.getMaxNumberOfIterations())){
       reqBody.itr=this.getMaxNumberOfIterations()
     }
+    console.log("after itr if " +reqBody.itr);
+    
     reqBody.func=this.strEq
-    if(this.getRelativeError()!==NaN)
+    if(!isNaN(this.getRelativeError()))
       reqBody.EPS=this.getRelativeError();
     
-    if(this.getUpperXguess()===NaN||this.getLowerXguess()===NaN)
+    if(isNaN(this.getUpperXguess())||(isNaN(this.getLowerXguess())))
     {
       console.log("No Guesses");
       reqBody.userGuess=false;
@@ -664,14 +680,14 @@ export class AppComponent {
   solveAndReceiveAnswerFalsePosition(){
     var reqBody:falsePosition=new falsePosition()
     reqBody.fig=this.getPrecision()
-    if(this.getMaxNumberOfIterations()!==NaN){
+    if(!isNaN(this.getMaxNumberOfIterations())){
       reqBody.itr=this.getMaxNumberOfIterations()
     }
     reqBody.func=this.strEq
-    if(this.getRelativeError()!==NaN)
+    if(!isNaN(this.getRelativeError()))
       reqBody.EPS=this.getRelativeError();
     
-    if(this.getUpperXguess()===NaN||this.getLowerXguess()===NaN)
+    if(isNaN(this.getUpperXguess())||(isNaN(this.getLowerXguess())))
     {
       console.log("No Guesses");
       reqBody.userGuess=false;
