@@ -449,7 +449,7 @@ public class Controller {
             {
                 res = NR.newtonModify1(func, m);
             }
-            else if(type.equals("mod1"))
+            else if(type.equals("mod2"))
             {
                 res = NR.newtonModify2(func);
             }
@@ -517,7 +517,6 @@ public class Controller {
             double EPS = jas.getDouble("EPS");
             int itr = jas.getInt("itr");
             String func = jas.getString("func");
-            String type = jas.getString("type");
             boolean isGuess = jas.getBoolean("userGuess");
             Secant secant = new Secant();
             secant.setEs(EPS);

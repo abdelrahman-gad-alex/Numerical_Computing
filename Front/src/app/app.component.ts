@@ -730,7 +730,7 @@ export class AppComponent {
       } else {
         console.log(response)
         this.Selector.res=JSON.parse(response)
-        this.Selector.handleSteps()
+        // this.Selector.handleSteps()
       }
     })
   }

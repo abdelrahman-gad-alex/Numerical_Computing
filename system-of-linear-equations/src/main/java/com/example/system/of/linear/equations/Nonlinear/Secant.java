@@ -86,8 +86,8 @@ public class Secant {
         double fprev =  fx(function,x0) ;
         double fi =  fx(function,x1) ;
 
-        update(x0, fprev, Double.NaN);
-        update(x1, fi, Double.NaN);
+        update(x0, fprev, 0);
+        update(x1, fi, 0);
 
         for(int i=0 ; i< maxIterations ; i++){
 
