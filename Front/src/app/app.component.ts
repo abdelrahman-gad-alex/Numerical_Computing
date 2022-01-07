@@ -127,12 +127,12 @@ export class AppComponent {
           return;
         }
         
-        var mathPowReg=/(?<![\d\.])(?=Math\.(sin|cos|tan)\(-?[x\.\d\*\+\-/]*\)\^-?[x\d\.]|-?[x\d\.\-]+\^-?[x\d\.])/g
-        var commaReg=/\^/g
-        var bracketReg= /(?<=Math\.pow\(-?[\d\.x]+,-?[\d\.x]+)(?=[-+*/]|$)/g
-        validating=validating.replace(mathPowReg,"Math.pow(")
-        validating=validating.replace(commaReg,",")
-        validating=validating.replace(bracketReg,")")
+        // var mathPowReg=/(?<![\d\.])(?=Math\.(sin|cos|tan)\(-?[x\.\d\*\+\-/]*\)\^-?[x\d\.]|-?[x\d\.\-]+\^-?[x\d\.])/g
+        // var commaReg=/\^/g
+        // var bracketReg= /(?<=Math\.pow\(-?[\d\.x]+,-?[\d\.x]+)(?=[-+*/]|$)/g
+        // validating=validating.replace(mathPowReg,"Math.pow(")
+        // validating=validating.replace(commaReg,",")
+        // validating=validating.replace(bracketReg,")")
         console.log("validated eq is " +validating);
         Globals.drawEquation=validating    
         break
