@@ -170,6 +170,21 @@ export class AppComponent {
         {
             s = s.replace("Math.sIn(x)", "Math.E")
         }
+        while(s.includes("^"))
+        {
+          s = s.replace("^", "**")
+        }
+        // if(temp.is)
+        try
+        {
+          let x = 1
+          let temp = eval(s)
+        }
+        catch(error)
+        {
+          return "Invalid"
+        }
+
       // s= s.replace("sin(x)", "Math.sin(x)")
       return s;
       }
