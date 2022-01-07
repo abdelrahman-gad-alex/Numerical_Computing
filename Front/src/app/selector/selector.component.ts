@@ -236,6 +236,7 @@ export class SelectorComponent implements OnInit {
       span!.innerText=("x= "+ this.res.res.toString())
       var ss=document.getElementById("stepss")
       ss!.replaceChildren("")
+      this.draw(this.handleGraph(this.res.res));
       for(let i of this.res.steps ){
         var nw=document.createElement("span")
         nw.style.fontSize="30px"
@@ -249,7 +250,13 @@ export class SelectorComponent implements OnInit {
           case 9:
             nw.innerText=("xi= "+i.xi+" ,f(xi)= "+i.fxi+"\n xi+1= "+i.xi1+" ,f(xi+1)= "+i.fxi1+"\n f'(xi)= "+i.fdxi +" ,ea= "+i.ea +"\n\n")
             break;
-              
+          case 10:
+            
+            nw.innerText=("xi= "+i.xi+" ,f(xi)= "+i.fxi+"\n xi+1= "+i.xi1+" ,f(xi+1)= "+i.fxi1+"\n f'(xi)= "+i.fdxi +" ,f''(xi)= "+i.fddxi +"\n ea= "+i.ea +"\n\n")
+            break;
+          case 11:
+            nw.innerText=("xi= "+i.xi+" ,f(xi)= "+i.fxi+"\n ea= "+i.ea +"\n\n")
+            break;
         }
         ss!.appendChild(nw)
       }
@@ -258,7 +265,16 @@ export class SelectorComponent implements OnInit {
     // span!.innerText=("Runtime is "+ this.res.time+"m.s")
   }
 
+handleGraph(sol:number):number{
+  if (sol <15){
+    return 15
+  }
+  else{
+    console.log(Math.round(sol+2))
+    return Math.round(sol+2)
 
+  }
+}
 
 
 
@@ -367,6 +383,5 @@ export class SelectorComponent implements OnInit {
     canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
     this.emitter.emit()
     console.log(Globals.drawEquation)
-    this.draw(15);
   }
 }

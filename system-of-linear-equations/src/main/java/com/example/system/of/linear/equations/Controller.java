@@ -352,7 +352,7 @@ public class Controller {
             {
                 double xu = jas.getDouble("xu");
                 double xl = jas.getDouble("xl");
-                bisect = bisect.setxlxu(0, 5);
+                bisect = bisect.setxlxu(xl, xu);
             }
             double res = bisect.bisections(func);
             if(!bisect.HasSolution())
