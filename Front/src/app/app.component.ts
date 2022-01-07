@@ -108,11 +108,11 @@ export class AppComponent {
         
         var evenNegRegex = /(?<!-)((?:--)+)(?!-)/g
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
-        var insertOneToLonelyRegex=/(?<![\d\*])(?=[a-zA-Z])/g
-        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
+        // var insertOneToLonelyRegex=/(?<![\d\*])(?=x)/g
+        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=x)/g 
         RHS=RHS.replace(evenNegRegex,"+")
         RHS=RHS.replace(oddNegRegex,"-")
-        RHS=RHS.replace(insertOneToLonelyRegex,"1")
+        // RHS=RHS.replace(insertOneToLonelyRegex,"1")
         RHS=RHS.replace(insertTimesRegex,"*");
         console.log(RHS)
         txt=LHS+'='+RHS
