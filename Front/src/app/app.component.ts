@@ -91,8 +91,10 @@ export class AppComponent {
       case "Bisection":
       case "False-Position":
       case "Fixed Point":
-      case "Newton-Raphson":
-      case "Secant Method":
+      case "Newton-Raphson (Original)":
+      case "Newton-Raphson (Modify one)":
+      case "Newton-Raphson (Modify two)":
+          case "Secant Method":
         //must be one equation
         var fxRegex=/^f\(x\)=[a-z\d-*/^+()]+(?!=)$/gm
         if(this.numberOfeq!==1 || !fxRegex.test(txt)){
@@ -131,7 +133,7 @@ export class AppComponent {
         validating=validating.replace(mathPowReg,"Math.pow(")
         validating=validating.replace(commaReg,",")
         validating=validating.replace(bracketReg,")")
-        console.log(validating);
+        console.log("validated eq is " +validating);
         Globals.drawEquation=validating    
         break
 
@@ -213,7 +215,9 @@ export class AppComponent {
         break;
       case "False-Position":
       case "Fixed Point":
-      case "Newton-Raphson":
+      case "Newton-Raphson (Original) ":
+      case "Newton-Raphson (Modify one) ":
+      case "Newton-Raphson (Modify two) ":
       case "Secant Method":
 
       default:
@@ -223,7 +227,7 @@ export class AppComponent {
   }
 
 
-  /**
+  /*
    * @returns the equations as a string from text area
    */
   getEquations():string{
@@ -231,7 +235,7 @@ export class AppComponent {
     return txt;
   }
 
-  /**
+  /*
    * 
    * @returns the method choosed
    */
@@ -264,9 +268,15 @@ export class AppComponent {
         choice="Fixed Point"
         break;
       case 8:
-        choice="Newton-Raphson"
+        choice="Newton-Raphson (Original)"
         break;
       case 9:
+        choice="Newton-Raphson (Modify one)"
+        break;
+      case 10: 
+        choice="Newton-Raphson (Modify two)"
+        break;
+      case 11:
         choice="Secant Method"
         break;
       default:
@@ -605,6 +615,9 @@ export class AppComponent {
 
 
   solveAndReceiveAnswerBisection(){
+    
+
+    
     var reqBody:requestData=new requestData()
     reqBody.fig=this.getPrecision()
     if(this.getMaxNumberOfIterations()){
