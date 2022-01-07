@@ -336,8 +336,8 @@ public class Controller {
     @PostMapping("/bisection")
     String solveBisection(@RequestBody String reqParam) throws JSONException
     {
-        try
-        {
+      //  try
+       // {
             JSONObject jas = new JSONObject(reqParam);
             int fig = jas.getInt("fig");
             double EPS = jas.getDouble("EPS");
@@ -352,25 +352,30 @@ public class Controller {
             {
                 double xu = jas.getDouble("xu");
                 double xl = jas.getDouble("xl");
-                bisect.setxlxu(xl, xu);
+                bisect = bisect.setxlxu(0, 5);
             }
             double res = bisect.bisections(func);
             if(!bisect.HasSolution())
             {
+            	System.out.println("NOT HAS SOLUTION");
                 return "Invalid";
             }
             LinkedList<HashMap<String, Double>> steps = bisect.getSteps();
+            
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
-            tempHM.put("steps", steps);
+           // tempHM.put("steps", steps);
             String ans = gson.toJson(tempHM);
+            
             return ans;
-        }
-        catch (Exception e)
-        {
+      //  }
+      /*  catch (Exception e)
+        //{
+        	System.out.println(e.printStackTrace());
+        	System.out.println("Error");
             return "Invalid";
-        }
+      //  }*/
 
     }
     @PostMapping("/falsePosition")

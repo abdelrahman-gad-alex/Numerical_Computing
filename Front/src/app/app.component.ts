@@ -668,6 +668,8 @@ export class AppComponent {
     this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)
+        console.log(response);
+        
       } else {
         console.log(response)
       }
@@ -708,7 +710,7 @@ export class AppComponent {
       }
     })
   }
-/*
+
   solveAndReceiveAnswerNewton(mod:string){
     var reqBody:newtonRaphson=new newtonRaphson()
     reqBody.fig=this.getPrecision()
@@ -730,7 +732,7 @@ export class AppComponent {
     })
   }
 
-*/
+
 }
 
 
