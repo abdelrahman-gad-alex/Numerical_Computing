@@ -2,6 +2,7 @@ package com.example.system.of.linear.equations;
 
 import com.example.system.of.linear.equations.Nonlinear.Bisection;
 //import com.example.system.of.linear.equations.Nonlinear.Bracketing;
+import com.example.system.of.linear.equations.Nonlinear.FalsePosition;
 import com.example.system.of.linear.equations.SystemModels.*;
 import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
@@ -336,28 +337,68 @@ public class Controller {
     @PostMapping("/bisection")
     String solveBisection(@RequestBody String reqParam) throws JSONException
     {
-        JSONObject jas = new JSONObject(reqParam);
-        int fig = jas.getInt("fig");
-        double EPS = jas.getDouble("EPS");
-        int itr = jas.getInt("itr");
-        String func = jas.getString("func");
-        Bisection bisect = new Bisection();
-        bisect.setEs(EPS);
-        bisect.setMaxIterations(itr);
-        bisect.setNoFigures(fig);
-        double res = bisect.bisections(func);
-        if(!bisect.HasSolution())
+        try
+        {
+            JSONObject jas = new JSONObject(reqParam);
+            int fig = jas.getInt("fig");
+            double EPS = jas.getDouble("EPS");
+            int itr = jas.getInt("itr");
+            String func = jas.getString("func");
+            Bisection bisect = new Bisection();
+            bisect.setEs(EPS);
+            bisect.setMaxIterations(itr);
+            bisect.setNoFigures(fig);
+            double res = bisect.bisections(func);
+            if(!bisect.HasSolution())
+            {
+                return "Invalid";
+            }
+            LinkedList<HashMap<String, Double>> steps = bisect.getSteps();
+            Gson gson = new Gson();
+            HashMap<String, Object> tempHM = new HashMap<String, Object>();
+            tempHM.put("res", res);
+            tempHM.put("steps", steps);
+            String ans = gson.toJson(tempHM);
+            return ans;
+        }
+        catch (Exception e)
         {
             return "Invalid";
         }
-        LinkedList<HashMap<String, Double>> steps = bisect.getSteps();
-        Gson gson = new Gson();
-        HashMap<String, Object> tempHM = new HashMap<String, Object>();
-        tempHM.put("res", res);
-        tempHM.put("steps", steps);
-        String ans = gson.toJson(tempHM);
-        System.out.println(steps);
-        return ans;
+
+    }
+    @PostMapping("/falsePosition")
+    String solveFalsePos(@RequestBody String reqParam) throws JSONException
+    {
+        try
+        {
+            JSONObject jas = new JSONObject(reqParam);
+            int fig = jas.getInt("fig");
+            double EPS = jas.getDouble("EPS");
+            int itr = jas.getInt("itr");
+            String func = jas.getString("func");
+            FalsePosition FP = new FalsePosition();
+            FP.setEs(EPS);
+            FP.setMaxIterations(itr);
+            FP.setNoFigures(fig);
+            double res = FP.falsePosition(func);
+            if(!FP.HasSolution())
+            {
+                return "Invalid";
+            }
+            LinkedList<HashMap<String, Double>> steps = FP.getSteps();
+            Gson gson = new Gson();
+            HashMap<String, Object> tempHM = new HashMap<String, Object>();
+            tempHM.put("res", res);
+            tempHM.put("steps", steps);
+            String ans = gson.toJson(tempHM);
+            return ans;
+        }
+        catch (Exception e)
+        {
+            return "Invalid";
+        }
+
     }
 
 
