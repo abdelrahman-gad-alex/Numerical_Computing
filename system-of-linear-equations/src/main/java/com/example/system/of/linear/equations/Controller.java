@@ -347,6 +347,13 @@ public class Controller {
             bisect.setEs(EPS);
             bisect.setMaxIterations(itr);
             bisect.setNoFigures(fig);
+            boolean isGuess = jas.getBoolean("userGuess");
+            if(isGuess)
+            {
+                double xu = jas.getDouble("xu");
+                double xl = jas.getDouble("xl");
+                bisect.setxlxu(xl, xu);
+            }
             double res = bisect.bisections(func);
             if(!bisect.HasSolution())
             {
@@ -380,6 +387,13 @@ public class Controller {
             FP.setEs(EPS);
             FP.setMaxIterations(itr);
             FP.setNoFigures(fig);
+            boolean isGuess = jas.getBoolean("userGuess");
+            if(isGuess)
+            {
+                double xu = jas.getDouble("xu");
+                double xl = jas.getDouble("xl");
+                FP.setxlxu(xl, xu);
+            }
             double res = FP.falsePosition(func);
             if(!FP.HasSolution())
             {
