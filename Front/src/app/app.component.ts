@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams } from "@angular/common/http";
 import { SelectorComponent } from './selector/selector.component';
-import { requestData } from './requestData';
+import { requestData,bisection,falsePosition,fixedPoint,newtonRaphson,secant } from './requestData';
 import { Globals } from './Globals';
 
 @Component({
@@ -17,6 +17,10 @@ export class AppComponent {
   solveJacobiURL="http://localhost:8080/controller/jacobi"
   solveLUURL="http://localhost:8080/controller/lu"
   solveBisectionURL="http://localhost:8080/controller/bisection"
+  solveFalsePositionURL="http://localhost:8080/controller/falsePosition"
+  solveFixedPointURL="http://localhost:8080/controller/fixedPoint"
+  solveNewtonRaphsonURL="http://localhost:8080/controller/newton"
+  solveSecantURL="http://localhost:8080/controller/secant"
 
 
   title = 'Front';
@@ -345,6 +349,21 @@ export class AppComponent {
     return txt;
   }
 
+  getMultiplicity():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpMulti"))).valueAsNumber;
+    return n;
+  }
+
+  getUpperXguess():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpLower"))).valueAsNumber;
+    return n;
+  }
+  
+  getLowerXguess():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpUpper"))).valueAsNumber;
+    return n;
+  }
+  
 
   /**
    * alerts the user of errors
@@ -455,9 +474,6 @@ export class AppComponent {
             })
   }
 
-
-
-
   solveAndReceiveAnswerSeidel(){
     var choice=this.getMethodType()
     var prec=this.getPrecision()
@@ -517,7 +533,6 @@ export class AppComponent {
             })
   }
 
-
   solveAndReceiveAnswerLU(){
     var choice=this.getMethodType()
     var prec=this.getPrecision()
@@ -557,9 +572,6 @@ export class AppComponent {
               }
             })
   }
-  
-    
-  
   
   solveAndReceiveAnswerJacobi(){
     var choice=this.getMethodType()
@@ -615,26 +627,28 @@ export class AppComponent {
 
 
   solveAndReceiveAnswerBisection(){
-    
-
-    
-    var reqBody:requestData=new requestData()
+    var reqBody:bisection=new bisection()
     reqBody.fig=this.getPrecision()
-    if(this.getMaxNumberOfIterations()){
+    if(this.getMaxNumberOfIterations()!==NaN){
       reqBody.itr=this.getMaxNumberOfIterations()
     }
-    else{
-      reqBody.itr=50
-    }
-
     reqBody.func=this.strEq
-    reqBody.EPS=this.getRelativeError();
-    if(this.getRelativeError())
-      reqBody.EPS=this.getRelativeError()
-    else
-      reqBody.EPS=0.00001
+    if(this.getRelativeError()!==NaN)
+      reqBody.EPS=this.getRelativeError();
+    
+    if(this.getUpperXguess()===NaN||this.getLowerXguess()===NaN)
+    {
+      console.log("No Guesses");
+      reqBody.userGuess=false;
+    } else{
+      
+      reqBody.userGuess=true
+      reqBody.xl=this.getLowerXguess()
+      reqBody.xu=this.getUpperXguess()
+      console.log("Guesses present "+reqBody.xl+" "+reqBody.xu);
+    }
     var strBody=JSON.stringify(reqBody)
-    console.log(strBody)
+    console.log("JSON String being sent: "+strBody)
     this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)
@@ -643,8 +657,64 @@ export class AppComponent {
       }
     })
 
-
   }
+
+
+
+  solveAndReceiveAnswerFalsePosition(){
+    var reqBody:falsePosition=new falsePosition()
+    reqBody.fig=this.getPrecision()
+    if(this.getMaxNumberOfIterations()!==NaN){
+      reqBody.itr=this.getMaxNumberOfIterations()
+    }
+    reqBody.func=this.strEq
+    if(this.getRelativeError()!==NaN)
+      reqBody.EPS=this.getRelativeError();
+    
+    if(this.getUpperXguess()===NaN||this.getLowerXguess()===NaN)
+    {
+      console.log("No Guesses");
+      reqBody.userGuess=false;
+    } else{
+      
+      reqBody.userGuess=true
+      reqBody.xl=this.getLowerXguess()
+      reqBody.xu=this.getUpperXguess()
+      console.log("Guesses present "+reqBody.xl+" "+reqBody.xu);
+    }
+    var strBody=JSON.stringify(reqBody)
+    console.log("JSON String being sent: "+strBody)
+    this.httpclient.post(this.solveFalsePositionURL,strBody,{responseType:'text'}).subscribe(response=>{
+      if(response==='Invalid'){
+        this.errorAlert(5)
+      } else {
+        console.log(response)
+      }
+    })
+  }
+/*
+  solveAndReceiveAnswerNewton(mod:string){
+    var reqBody:newtonRaphson=new newtonRaphson()
+    reqBody.fig=this.getPrecision()
+    if(this.getMaxNumberOfIterations()!==NaN){
+      reqBody.itr=this.getMaxNumberOfIterations()
+    }
+    reqBody.func=this.strEq
+    if(this.getRelativeError()!==NaN)
+      reqBody.EPS=this.getRelativeError();
+   
+    var strBody=JSON.stringify(reqBody)
+    console.log("JSON String being sent: "+strBody)
+    this.httpclient.post(this.solveFalsePositionURL,strBody,{responseType:'text'}).subscribe(response=>{
+      if(response==='Invalid'){
+        this.errorAlert(5)
+      } else {
+        console.log(response)
+      }
+    })
+  }
+
+*/
 }
 
 
