@@ -12,6 +12,7 @@ public class Bisection {
     LinkedList<HashMap<String,Double>> steps ;
     boolean hasSolution = true ;
     double[] xlxu = new double[]{0,0} ;
+    double time ;
 
 
     public Bisection setEs(double es) {
@@ -42,6 +43,7 @@ public class Bisection {
         return steps ;
     }
 
+
     double fx(String function, double x){
         Function f = new Function(function) ;
         Argument x0 = new Argument("x = 1") ;
@@ -53,13 +55,25 @@ public class Bisection {
             return round(fx) ;
     }
 
+    void endTime(long start){
+        long endd = System.nanoTime();
+        time = (endd-start) / 1e6 ;
+
+    }
+    public double getTime(){
+        return time ;
+    }
+
 
     public double bisections(String function){
         steps = new LinkedList<HashMap<String,Double>>() ;
         hasSolution = true ;
 
+        long start = System.nanoTime();
+
         double[] xlxu = xlxu(function) ;
         if(!hasSolution){
+            endTime(start);
             return -1 ;
         }
         double xl = xlxu[0] ;
@@ -70,7 +84,6 @@ public class Bisection {
         double ea ;
         for(int i=0 ; i< maxIterations ; i++){
             xr = round( (xu+xl) /2.0) ;
-            System.out.println(xr);
             ea = round(Math.abs(xu-xl)/xl) ;
 
             double fl = fx(function,xl) ;
@@ -78,10 +91,13 @@ public class Bisection {
             update(xl, xu, xr, fr, ea);
 
             if(fl ==0){
+                endTime(start);
                 return xl ;
             }else if(fr ==0){
+                endTime(start);
                 return xr ;
             }else if (fx(function, xu)==0){
+                endTime(start);
                 return xu ;
             }
 
@@ -92,15 +108,12 @@ public class Bisection {
             }
 
             if(Math.abs(fr) <es || ea<es){
-                System.out.print("f(xr)=");
-                System.out.println(fr);
-                System.out.print("ea=");
-                System.out.println(ea);
 
                 hasSolution = true ;
                 break;
             }
         }
+        endTime(start);
         return xr ;
 
     }
