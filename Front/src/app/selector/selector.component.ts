@@ -264,9 +264,12 @@ export class SelectorComponent implements OnInit {
   }
 
   finalNL(currentMode:number){// a function to show the final answers and the time
-      var span =document.getElementById("final"+"0")
-      span!.style.display = "block"
-      span!.innerText=("x= "+ this.res.res.toString())
+    var span =document.getElementById("final"+"0")
+    span!.style.display = "block"
+    span!.innerText=("x= "+ this.res.res.toString())
+    var span =document.getElementById("final"+"1")
+    span!.style.display = "block"
+    span!.innerText=("Runtime= "+ this.res.time.toString())
       var ss=document.getElementById("stepss")
       ss!.replaceChildren("")
       this.draw(this.handleGraph(this.res.res),currentMode);
