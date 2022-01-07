@@ -11,12 +11,13 @@ export class SelectorComponent implements OnInit {
 
 
   constructor() {}
-  
   ngOnInit(): void {
-  }
+    }
   fun1(x: number) {return eval(Globals.drawEquation);  }
   fun2(x: number) {return Math.cos(3*x);}
- draw(max:number) {
+  fun3(x: number) {return Math.cos(3*x);}
+  fun4(x: number) {return x;}
+ draw(max:number,currentMode:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
  if (null==canvas || !canvas.getContext) return;
 
@@ -26,13 +27,32 @@ export class SelectorComponent implements OnInit {
  axes.scale = (canvas.width-20)/(2*max);  
  axes.max = max               // 40 pixels from x=0 to x=1
  axes.doNegativeX = true;
-
  this.showAxes(ctx!,axes);
- this.funGraph(ctx!,axes,this.fun1,"rgb(11,153,11)",1); 
+ this.funGraph(ctx!,axes,this.fun1,"rgb(11,153,11)",1,false,0); 
+
+ switch(currentMode){
+  case 5:
+  case 6:
+    this.funGraph(ctx!,axes,this.fun1,"rgb(244,34,114)",1,true,(<HTMLInputElement>(document.getElementById("inpLower"))).valueAsNumber);
+    this.funGraph(ctx!,axes,this.fun1,"rgb(0,159,183)",1,true,(<HTMLInputElement>(document.getElementById("inpUpper"))).valueAsNumber);
+    break;
+    case 7:
+      this.funGraph(ctx!,axes,this.fun4,"rgb(0,159,183)",1,false,0);
+    break;
+  case 8:
+  case 9:
+  case 10:    
+  case 11:
+
+    break;
+}
+
+
+ 
 
 }
 
- funGraph (ctx: { canvas: { width: number; }; beginPath: () => void; lineWidth: any; strokeStyle: any; moveTo: (arg0: any, arg1: number) => void; lineTo: (arg0: any, arg1: number) => void; stroke: () => void; },axes: { x0?: any; y0?: any; scale?: any; doNegativeX?: any; },func: { (x: any): number; (x: any): number; (arg0: number): number; },color: string,thick: number) {
+ funGraph (ctx: { canvas: { width: number; }; beginPath: () => void; lineWidth: any; strokeStyle: any; moveTo: (arg0: any, arg1: number) => void; lineTo: (arg0: any, arg1: number) => void; stroke: () => void; },axes: { x0?: any; y0?: any; scale?: any; doNegativeX?: any; },func: { (x: any): number; (x: any): number; (arg0: number): number; },color: string,thick: number,boundry:boolean,x:number) {
  var xx, yy, dx=1, x0=axes.x0, y0=axes.y0, scale=axes.scale;
  var iMax = Math.round((ctx.canvas.width-x0)/dx);
  var iMin = axes.doNegativeX ? Math.round(-x0/dx) : 0;
@@ -40,20 +60,33 @@ export class SelectorComponent implements OnInit {
  ctx.lineWidth = 2;
  ctx.strokeStyle = color;
  for (var i=iMin;i<=iMax;i+=0.1) {
-  xx = dx*i; yy = scale*func(xx/scale);
-  if (yy==Infinity||(Math.abs(yy-(scale*func((i-1)/scale)))>1000&&yy*(scale*func((i-1)/scale))<0)){
-    ctx.stroke()
-    ctx.beginPath()
+    if (boundry){
+      yy=i ;xx=x;
+      if (i==iMin) {
+        ctx.moveTo(x0+scale*xx,y0);
+      }
+      else {
+        ctx.lineTo(x0+scale*xx,y0-yy);
+      }
+    }
+    else{
+    xx = i; yy = scale*func(xx/scale);
+    if (yy==Infinity||(Math.abs(yy-(scale*func((i-1)/scale)))>1000&&yy*(scale*func((i-1)/scale))<0)){
+      ctx.stroke()
+      ctx.beginPath()
+    }
+    else if (i==iMin) {
+      ctx.moveTo(x0+xx,y0-yy);
+    }
+    else {
+      ctx.lineTo(x0+xx,y0-yy);
+    }
   }
-  else if (i==iMin) {
-    ctx.moveTo(x0+xx,y0-yy);
-  }
-  else {
-    ctx.lineTo(x0+xx,y0-yy);}
  }
  ctx.stroke();
 }
 
+  
  showAxes(ctx: CanvasRenderingContext2D,axes: { x0?: any; y0?: any; doNegativeX?: any; scale?: any; max?: any; }) {
  var x0=axes.x0, w=ctx.canvas.width;
  var y0=axes.y0, h=ctx.canvas.height;
@@ -236,7 +269,7 @@ export class SelectorComponent implements OnInit {
       span!.innerText=("x= "+ this.res.res.toString())
       var ss=document.getElementById("stepss")
       ss!.replaceChildren("")
-      this.draw(this.handleGraph(this.res.res));
+      this.draw(this.handleGraph(this.res.res),currentMode);
       for(let i of this.res.steps ){
         var nw=document.createElement("span")
         nw.style.fontSize="30px"
