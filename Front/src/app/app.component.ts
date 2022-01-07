@@ -4,6 +4,7 @@ import { SelectorComponent } from './selector/selector.component';
 import { requestData,bisection,falsePosition,fixedPoint,newtonRaphson,secant } from './requestData';
 import { Globals } from './Globals';
 import * as math from 'mathjs';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ export class AppComponent {
    * then it calls the methods responsible for sending the request 
    */
   receiveInput(){
+    this.strEq=""
     var type = this.getMethodType();
     var txt :string = this.getEquations()
     var spaceRegex=/ /g
@@ -176,7 +178,7 @@ export class AppComponent {
       default:
         break
     }
-    this.strEq=""
+    //this.strEq=""
   }
 
 
@@ -817,12 +819,14 @@ export class AppComponent {
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
-        var divided=this.strEq.split('=')
-        var firstDerivative=math.derivative(divided[1], 'x')
+        console.log(this.strEq)
+        var divided:string[]=this.strEq.split('=')
+        var str=divided[1]
+        var firstDerivative=math.derivative(str.toString(), 'x')
         var processed=divided[0]+'='+firstDerivative.toString()
         Globals.drawEquationd=this.validTs(processed)
         if(mod === 'mod2'){
-          var secondDerivative=math.derivative(firstDerivative.toString(), 'x')
+          var secondDerivative=math.derivative(firstDerivative, 'x')
           var processed2=divided[0]+'='+secondDerivative.toString()
           Globals.drawEquationdd=this.validTs(processed2)
         }
@@ -834,6 +838,8 @@ export class AppComponent {
         console.log(response)
         this.Selector.res=JSON.parse(response)
         this.Selector.handleSteps()
+
+        this.strEq=""
       }
     })
   }
