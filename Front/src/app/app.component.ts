@@ -379,6 +379,11 @@ export class AppComponent {
     return n;
   }
   
+  getXguess():number{
+    var n=(<HTMLInputElement>(document.getElementById("inpGuess"))).valueAsNumber;
+    return n;
+  }
+
   getX1():number{
     var n=(<HTMLInputElement>(document.getElementById("inpGuessx0"))).valueAsNumber;
     return n;
@@ -737,14 +742,14 @@ export class AppComponent {
     if(!isNaN(this.getRelativeError()))
       reqBody.EPS=this.getRelativeError();
     
-    if(isNaN(this.getX1()))
+    if(isNaN(this.getXguess()))
     {
       console.log("No Guesses");
       reqBody.userGuess=false;
     } else{
       
       reqBody.userGuess=true
-      reqBody.x0=this.getX1()
+      reqBody.x0=this.getXguess()
       console.log("Guesses present "+reqBody.x0);
     }
 
@@ -782,14 +787,14 @@ export class AppComponent {
     if(!isNaN(this.getRelativeError()))
       reqBody.EPS=this.getRelativeError();
     
-    if(isNaN(this.getX1()))
+    if(isNaN(this.getXguess()))
     {
       console.log("No Guesses");
       reqBody.userGuess=false;
     } else{
       
       reqBody.userGuess=true
-      reqBody.x0=this.getX1()
+      reqBody.x0=this.getXguess()
       console.log("Guesses present "+reqBody.x0);
     }
 
