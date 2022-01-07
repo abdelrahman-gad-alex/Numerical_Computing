@@ -333,6 +333,10 @@ public class Controller {
         tempHM.put("time", lu.getTime());
         return gson.toJson(tempHM);
     }
+    //We perform bisection to get the root of function
+    //Thus send solution
+    //Through receiving its needed data from the user
+    //Then mapping them to the class in order to calculate solution
     @PostMapping("/bisection")
     String solveBisection(@RequestBody String reqParam) throws JSONException
     {
@@ -348,20 +352,22 @@ public class Controller {
             bisect.setMaxIterations(itr);
             bisect.setNoFigures(fig);
             boolean isGuess = jas.getBoolean("userGuess");
+            //Checking if user give us xu & xl
             if(isGuess)
             {
                 double xu = jas.getDouble("xu");
                 double xl = jas.getDouble("xl");
-                bisect = bisect.setxlxu(0, 5);
+                bisect = bisect.setxlxu(xl, xu);
             }
             double res = bisect.bisections(func);
+            //Checking if there is solution
             if(!bisect.HasSolution())
             {
-            	System.out.println("NOT HAS SOLUTION");
                 return "Invalid";
             }
             LinkedList<HashMap<String, Double>> steps = bisect.getSteps();
-            
+            //we put the final solution, steps
+            //in hashMap then we convert it to json string to send it to be viewed to user
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
@@ -377,6 +383,10 @@ public class Controller {
        }
 
     }
+    //We perform bisection to get the root of function
+    //Thus send solution
+    //Through receiving its needed data from the user
+    //Then mapping them to the class in order to calculate solution
     @PostMapping("/falsePosition")
     String solveFalsePos(@RequestBody String reqParam) throws JSONException
     {
@@ -392,6 +402,7 @@ public class Controller {
             FP.setMaxIterations(itr);
             FP.setNoFigures(fig);
             boolean isGuess = jas.getBoolean("userGuess");
+            //Checking if user give us xu & xl
             if(isGuess)
             {
                 double xu = jas.getDouble("xu");
@@ -399,11 +410,14 @@ public class Controller {
                 FP.setxlxu(xl, xu);
             }
             double res = FP.falsePosition(func);
+            //Checking if there is solution
             if(!FP.HasSolution())
             {
                 return "Invalid";
             }
             LinkedList<HashMap<String, Double>> steps = FP.getSteps();
+            //we put the final solution, steps
+            //in hashMap then we convert it to json string to send it to be viewed to user
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
@@ -417,6 +431,10 @@ public class Controller {
         }
 
     }
+    //We perform Newton Raphson method to get the root of function
+    //Thus send solution
+    //Through receiving its needed data from the user
+    //Then mapping them to the class in order to calculate solution
     @PostMapping("/newton")
     String solveNewtonRaphson(@RequestBody String reqParam) throws JSONException
     {
@@ -428,7 +446,6 @@ public class Controller {
             int itr = jas.getInt("itr");
             String func = jas.getString("func");
             String type = jas.getString("type");
-//            double x0 = jas.getDouble("x0");
             boolean isGuess = jas.getBoolean("userGuess");
             NewtonRaphson NR = new NewtonRaphson();
             NR.setEs(EPS);
@@ -436,11 +453,13 @@ public class Controller {
             NR.setNoFigures(fig);
             int m = jas.getInt("m");
             double res =0;
+            //Checking if user give us x0
             if(isGuess)
             {
                 double x0 = jas.getDouble("x0");
                 NR.setx0(x0);
             }
+            //Checking which type of Newton Rapshon method
             if(type.equals("original"))
             {
                 res = NR.newton(func);
@@ -453,6 +472,7 @@ public class Controller {
             {
                 res = NR.newtonModify2(func);
             }
+            //Checking if there is solution
             if(!NR.HasSolution())
             {
                 return "Invalid";
@@ -470,6 +490,10 @@ public class Controller {
             return "Invalid";
         }
     }
+    //We perform fixed point method to get the root of function
+    //Thus send solution
+    //Through receiving its needed data from the user
+    //Then mapping them to the class in order to calculate solution
     @PostMapping("/fixedPoint")
     String solveFixedPoint(@RequestBody String reqParam) throws JSONException
     {
@@ -481,20 +505,28 @@ public class Controller {
             int itr = jas.getInt("itr");
             String func = jas.getString("func");
             String type = jas.getString("type");
-//            double x0 = jas.getDouble("x0");
             boolean isGuess = jas.getBoolean("userGuess");
             FixedPoint FP = new FixedPoint();
             FP.setEs(EPS);
             FP.setMaxIterations(itr);
             FP.setNoFigures(fig);
             double res =0;
+            //Checking if user give us x0
             if(isGuess)
             {
                 double x0 = jas.getDouble("x0");
+                //!!!!!Mark uncomment the line below
 //                FP.setx0(x0);
+            }
+            //Checking if there is solution
+            if(!FP.HasSolution())
+            {
+                return "Invalid";
             }
             res = FP.fixedpt(func);
             LinkedList<HashMap<String, Double>> steps = FP.getSteps();
+            //we put the final solution, steps
+            //in hashMap then we convert it to json string to send it to be viewed to user
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
@@ -507,6 +539,10 @@ public class Controller {
             return "Invalid";
         }
     }
+    //We perform secant method to get the root of function
+    //Thus send solution
+    //Through receiving its needed data from the user
+    //Then mapping them to the class in order to calculate solution
     @PostMapping("/secant")
     String solveSecant(@RequestBody String reqParam) throws JSONException
     {
@@ -523,6 +559,7 @@ public class Controller {
             secant.setMaxIterations(itr);
             secant.setNoFigures(fig);
             double res =0;
+            //Checking if user give us x0 & x1
             if(isGuess)
             {
                 double x0 = jas.getDouble("x0");
@@ -531,7 +568,14 @@ public class Controller {
                 secant.setx1(x1);
             }
             res = secant.secant(func);
+            //Checking if there is solution
+            if(!secant.HasSolution())
+            {
+                return "Invalid";
+            }
             LinkedList<HashMap<String, Double>> steps = secant.getSteps();
+            //we put the final solution, steps
+            //in hashMap then we convert it to json string to send it to be viewed to user
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
