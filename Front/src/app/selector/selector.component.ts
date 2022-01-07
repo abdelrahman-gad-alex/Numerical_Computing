@@ -13,12 +13,9 @@ export class SelectorComponent implements OnInit {
   
   ngOnInit(): void {
     this.draw(15);
-    console.log(this.xLower+"  ,  "+this.xUpper)
   }
   fun1(x: number) {return Math.pow(x,2);  }
   fun2(x: number) {return Math.cos(3*x);}
-  xUpper?:number
-  xLower?:number
  draw(max:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
  if (null==canvas || !canvas.getContext) return;
@@ -49,46 +46,10 @@ export class SelectorComponent implements OnInit {
     ctx.beginPath()
   }
   else if (i==iMin) {
-    if(yy>=0&&yy<=0.05){console.log ("L : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
-    else if(yy<=0&&yy>=-0.05){console.log ("U : "+i/scale+" = "+yy+", "+scale*func(i+0.1/scale)+ " , "+scale*func(i-0.1/scale))}
-ctx.moveTo(x0+xx,y0-yy);}
+    ctx.moveTo(x0+xx,y0-yy);
+  }
   else {
-    if(yy>=0&&yy<=0.5 ){
-      if(yy*(scale*func((i+0.1)/scale))<0){
-        if (this.xLower==undefined){
-        this.xLower=i/scale
-        this.xUpper=(i+0.1)
-        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
-        }
-      }
-      else if(yy*((scale*func((i-0.1)/scale)))<0){
-        if (this.xLower==undefined){
-        this.xLower=(i-0.1)/scale
-        this.xUpper=(i)/scale
-        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
-        }
-      }
-    }
-    else if(yy<=0&&yy>=-0.5){
-      
-      if(yy*(scale*func((i+0.1)/scale))<0){
-        if (this.xLower==undefined){
-        this.xLower=i/scale
-        this.xUpper=(i+0.1)/scale
-        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
-        }
-      }
-      else if(yy*((scale*func((i-0.1)/scale)))<0){
-        if (this.xLower==undefined){
-        this.xLower=(i-0.1)/scale
-        this.xUpper=(i)/scale
-        console.log ("L : "+i/scale+" = "+yy+", "+(scale*func((i+0.1)/scale))+ " , "+(scale*func((i-0.1)/scale)))
-        }
-      }
-      
-    }
-  ctx.lineTo(x0+xx,y0-yy);}
-  
+    ctx.lineTo(x0+xx,y0-yy);}
  }
  ctx.stroke();
 }
