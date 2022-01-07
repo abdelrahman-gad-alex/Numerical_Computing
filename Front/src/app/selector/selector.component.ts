@@ -100,10 +100,13 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
+        document.getElementById("Guess")!.style.display = "none";   
         document.getElementById("Multi")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "none";
+        document.getElementById("Guessx0")!.style.display = "none"; 
+        document.getElementById("Guessx-1")!.style.display = "none"; 
         document.getElementById("textBox")!.style.marginLeft= "100%";      
         break;  
       
@@ -112,10 +115,13 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Multi")!.style.display = "none";
+        document.getElementById("Guess")!.style.display = "none";   
+        document.getElementById("LU-type")!.style.display = "none";  
+        document.getElementById("Guessx0")!.style.display = "none"; 
+        document.getElementById("Guessx-1")!.style.display = "none"; 
         document.getElementById("Error")!.style.display = "flex";
         document.getElementById("iterations")!.style.display = "flex";
-        document.getElementById("intial")!.style.display = "flex";  
-        document.getElementById("LU-type")!.style.display = "none";      
+        document.getElementById("intial")!.style.display = "flex";     
         document.getElementById("textBox")!.style.marginLeft= "0%";        
         break;
   
@@ -124,39 +130,44 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
         document.getElementById("Multi")!.style.display = "none";
-        document.getElementById("iterations")!.style.display = "none";
+        document.getElementById("Guess")!.style.display = "none";   
         document.getElementById("intial")!.style.display = "none";  
+        document.getElementById("iterations")!.style.display = "none";
+        document.getElementById("Guessx0")!.style.display = "none"; 
+        document.getElementById("Guessx-1")!.style.display = "none"; 
         document.getElementById("LU-type")!.style.display = "flex";
         document.getElementById("textBox")!.style.marginLeft= "0%";        
         break;  
         
       case 5:
       case 6:
+
+        document.getElementById("Multi")!.style.display = "none";
+        document.getElementById("intial")!.style.display = "none";  
+        document.getElementById("LU-type")!.style.display = "none";      
+        document.getElementById("Guess")!.style.display = "none";
+        document.getElementById("Guessx0")!.style.display = "none"; 
+        document.getElementById("Guessx-1")!.style.display = "none"; 
         document.getElementById("Lower")!.style.display = "flex";
         document.getElementById("Upper")!.style.display = "flex";
         document.getElementById("Error")!.style.display = "flex";
-        document.getElementById("Multi")!.style.display = "none";
-        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+        document.getElementById("iterations")!.style.display = "flex"; 
+        document.getElementById("textBox")!.style.marginLeft= "0%";     
 
-        document.getElementById("iterations")!.style.display = "flex";
-        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
-        document.getElementById("intial")!.style.display = "none";  
-        document.getElementById("LU-type")!.style.display = "none";      
-        document.getElementById("textBox")!.style.marginLeft= "0%";        
         break;      
       case 7:
       case 8:
       case 10:
-      case 11:
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
-        document.getElementById("Error")!.style.display = "flex";
         document.getElementById("Multi")!.style.display = "none";
-        document.getElementById("relError")!.setAttribute("placeholder","0.00001");
-        document.getElementById("iterations")!.style.display = "flex";
-        document.getElementById("maxIterations")!.setAttribute("placeholder","50");
         document.getElementById("intial")!.style.display = "none";  
-        document.getElementById("LU-type")!.style.display = "none";      
+        document.getElementById("LU-type")!.style.display = "none"; 
+        document.getElementById("Guessx0")!.style.display = "none"; 
+        document.getElementById("Guessx-1")!.style.display = "none"; 
+        document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("iterations")!.style.display = "flex";
+        document.getElementById("Guess")!.style.display = "flex";
         document.getElementById("textBox")!.style.marginLeft= "0%";        
         break;
         case 9:
@@ -164,14 +175,27 @@ export class SelectorComponent implements OnInit {
           document.getElementById("Upper")!.style.display = "none";
           document.getElementById("Error")!.style.display = "flex";
           document.getElementById("Multi")!.style.display = "flex";
-          document.getElementById("relError")!.setAttribute("placeholder","0.00001");
-  
-          document.getElementById("iterations")!.style.display = "flex";
-          document.getElementById("maxIterations")!.setAttribute("placeholder","50");
           document.getElementById("intial")!.style.display = "none";  
-          document.getElementById("LU-type")!.style.display = "none";      
+          document.getElementById("LU-type")!.style.display = "none";  
+          document.getElementById("Guessx0")!.style.display = "none"; 
+          document.getElementById("Guessx-1")!.style.display = "none";   
+          document.getElementById("iterations")!.style.display = "flex";
+          document.getElementById("Guess")!.style.display = "flex";
           document.getElementById("textBox")!.style.marginLeft= "0%";        
-  
+          break;
+          case 11:
+            document.getElementById("Lower")!.style.display = "none";
+            document.getElementById("Upper")!.style.display = "none";
+            document.getElementById("Multi")!.style.display = "none";
+            document.getElementById("intial")!.style.display = "none";  
+            document.getElementById("LU-type")!.style.display = "none";
+            document.getElementById("Guess")!.style.display = "none"; 
+            document.getElementById("Error")!.style.display = "flex";
+            document.getElementById("iterations")!.style.display = "flex";
+            document.getElementById("Guessx0")!.style.display = "flex"; 
+            document.getElementById("Guessx-1")!.style.display = "flex"; 
+            document.getElementById("textBox")!.style.marginLeft= "0%";            
+          break;
             }
     
   }
