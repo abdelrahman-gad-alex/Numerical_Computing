@@ -372,6 +372,8 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
+            tempHM.put("time", bisect.getTime());
+
             String ans = gson.toJson(tempHM);
             
             return ans;
@@ -422,6 +424,8 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
+            tempHM.put("time", FP.getTime());
+
             String ans = gson.toJson(tempHM);
             return ans;
         }
@@ -482,6 +486,8 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
+            tempHM.put("time", NR.getTime());
+
             String ans = gson.toJson(tempHM);
             return ans;
         }
@@ -531,6 +537,7 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
+
             String ans = gson.toJson(tempHM);
             return ans;
         }
@@ -580,6 +587,8 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
+            tempHM.put("time", secant.getTime());
+
             String ans = gson.toJson(tempHM);
             return ans;
         }
