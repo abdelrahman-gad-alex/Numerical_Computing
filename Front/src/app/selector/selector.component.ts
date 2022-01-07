@@ -13,9 +13,8 @@ export class SelectorComponent implements OnInit {
   constructor() {}
   
   ngOnInit(): void {
-    this.draw(15);
   }
-  fun1(x: number) {return Math.pow(x,2);  }
+  fun1(x: number) {return eval(Globals.drawEquation);  }
   fun2(x: number) {return Math.cos(3*x);}
  draw(max:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -101,6 +100,7 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
+        document.getElementById("Multi")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "none";
@@ -111,6 +111,7 @@ export class SelectorComponent implements OnInit {
       case 4:
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
+        document.getElementById("Multi")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
         document.getElementById("iterations")!.style.display = "flex";
         document.getElementById("intial")!.style.display = "flex";  
@@ -122,6 +123,7 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "none";
+        document.getElementById("Multi")!.style.display = "none";
         document.getElementById("iterations")!.style.display = "none";
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "flex";
@@ -133,6 +135,7 @@ export class SelectorComponent implements OnInit {
         document.getElementById("Lower")!.style.display = "flex";
         document.getElementById("Upper")!.style.display = "flex";
         document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("Multi")!.style.display = "none";
         document.getElementById("relError")!.setAttribute("placeholder","0.00001");
 
         document.getElementById("iterations")!.style.display = "flex";
@@ -143,19 +146,32 @@ export class SelectorComponent implements OnInit {
         break;      
       case 7:
       case 8:
-      case 9:
+      case 10:
+      case 11:
         document.getElementById("Lower")!.style.display = "none";
         document.getElementById("Upper")!.style.display = "none";
         document.getElementById("Error")!.style.display = "flex";
+        document.getElementById("Multi")!.style.display = "none";
         document.getElementById("relError")!.setAttribute("placeholder","0.00001");
-
         document.getElementById("iterations")!.style.display = "flex";
         document.getElementById("maxIterations")!.setAttribute("placeholder","50");
         document.getElementById("intial")!.style.display = "none";  
         document.getElementById("LU-type")!.style.display = "none";      
         document.getElementById("textBox")!.style.marginLeft= "0%";        
         break;
-
+        case 9:
+          document.getElementById("Lower")!.style.display = "none";
+          document.getElementById("Upper")!.style.display = "none";
+          document.getElementById("Error")!.style.display = "flex";
+          document.getElementById("Multi")!.style.display = "flex";
+          document.getElementById("relError")!.setAttribute("placeholder","0.00001");
+  
+          document.getElementById("iterations")!.style.display = "flex";
+          document.getElementById("maxIterations")!.setAttribute("placeholder","50");
+          document.getElementById("intial")!.style.display = "none";  
+          document.getElementById("LU-type")!.style.display = "none";      
+          document.getElementById("textBox")!.style.marginLeft= "0%";        
+  
             }
     
   }
@@ -282,6 +298,11 @@ export class SelectorComponent implements OnInit {
 
 
   handleSubmit(){
+    var canvas = <HTMLCanvasElement>document.getElementById("canvas");
+
+    canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
     this.emitter.emit()
+    console.log(Globals.drawEquation)
+    this.draw(15);
   }
 }
