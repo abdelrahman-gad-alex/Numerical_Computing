@@ -37,9 +37,13 @@ export class AppComponent {
   receiveInput(){
     var type = this.getMethodType();
     var txt :string = this.getEquations()
+    var spaceRegex=/ /g
+    txt=txt.replace(spaceRegex,"")
     var dividedTxt=txt.split(/\n/)
     var numberOfequations:number = dividedTxt.length
     this.numberOfeq=numberOfequations
+
+
 
     switch(type){
       case "Gauss-Elimination":
@@ -218,12 +222,23 @@ export class AppComponent {
         this.solveAndReceiveAnswerBisection()
         break;
       case "False-Position":
+        this.solveAndReceiveAnswerFalsePosition()
+        break;
       case "Fixed Point":
-      case "Newton-Raphson (Original) ":
-      case "Newton-Raphson (Modify one) ":
-      case "Newton-Raphson (Modify two) ":
+        this.solveAndReceiveAnswerFixedPoint()
+        break;
+      case "Newton-Raphson (Original)":
+        this.solveAndReceiveAnswerNewton('original')
+        break;
+      case "Newton-Raphson (Modify one)":
+        this.solveAndReceiveAnswerNewton('mod1')
+        break;
+      case "Newton-Raphson (Modify two)":
+        this.solveAndReceiveAnswerNewton('mod2')
+        break;
       case "Secant Method":
-
+        this.solveAndReceiveAnswerSecant()
+        break
       default:
         break
     }
@@ -711,19 +726,41 @@ export class AppComponent {
     })
   }
 
+  
   solveAndReceiveAnswerNewton(mod:string){
     var reqBody:newtonRaphson=new newtonRaphson()
     reqBody.fig=this.getPrecision()
-    if(this.getMaxNumberOfIterations()!==NaN){
+    if(!isNaN(this.getMaxNumberOfIterations())){
       reqBody.itr=this.getMaxNumberOfIterations()
     }
     reqBody.func=this.strEq
-    if(this.getRelativeError()!==NaN)
+    if(!isNaN(this.getRelativeError()))
       reqBody.EPS=this.getRelativeError();
-   
+    
+    if(isNaN(this.getX1()))
+    {
+      console.log("No Guesses");
+      reqBody.userGuess=false;
+    } else{
+      
+      reqBody.userGuess=true
+      reqBody.x0=this.getX1()
+      console.log("Guesses present "+reqBody.x0);
+    }
+
+    if(mod==='mod1'){
+      if(isNaN(this.getMultiplicity())){
+        this.errorAlert(5)
+        return
+      }
+      else{
+        reqBody.m
+      }
+    }
+    reqBody.type=mod
     var strBody=JSON.stringify(reqBody)
     console.log("JSON String being sent: "+strBody)
-    this.httpclient.post(this.solveFalsePositionURL,strBody,{responseType:'text'}).subscribe(response=>{
+    this.httpclient.post(this.solveNewtonRaphsonURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
@@ -732,6 +769,75 @@ export class AppComponent {
     })
   }
 
+
+
+
+  solveAndReceiveAnswerFixedPoint(){
+    var reqBody:fixedPoint=new fixedPoint()
+    reqBody.fig=this.getPrecision()
+    if(!isNaN(this.getMaxNumberOfIterations())){
+      reqBody.itr=this.getMaxNumberOfIterations()
+    }
+    reqBody.func=this.strEq
+    if(!isNaN(this.getRelativeError()))
+      reqBody.EPS=this.getRelativeError();
+    
+    if(isNaN(this.getX1()))
+    {
+      console.log("No Guesses");
+      reqBody.userGuess=false;
+    } else{
+      
+      reqBody.userGuess=true
+      reqBody.x0=this.getX1()
+      console.log("Guesses present "+reqBody.x0);
+    }
+
+   
+    var strBody=JSON.stringify(reqBody)
+    console.log("JSON String being sent: "+strBody)
+    this.httpclient.post(this.solveFixedPointURL,strBody,{responseType:'text'}).subscribe(response=>{
+      if(response==='Invalid'){
+        this.errorAlert(5)
+      } else {
+        console.log(response)
+      }
+    })
+  }
+
+
+
+  solveAndReceiveAnswerSecant(){
+    var reqBody:secant=new secant()
+    reqBody.fig=this.getPrecision()
+    if(!isNaN(this.getMaxNumberOfIterations())){
+      reqBody.itr=this.getMaxNumberOfIterations()
+    }
+    reqBody.func=this.strEq
+    if(!isNaN(this.getRelativeError()))
+      reqBody.EPS=this.getRelativeError();
+    
+    if(isNaN(this.getX0())||(isNaN(this.getX1())))
+    {
+      console.log("No Guesses");
+      reqBody.userGuess=false;
+    } else{
+      
+      reqBody.userGuess=true
+      reqBody.x0=this.getX0()
+      reqBody.x1=this.getX1()
+      console.log("Guesses present "+reqBody.x0+" "+reqBody.x1);
+    }
+    var strBody=JSON.stringify(reqBody)
+    console.log("JSON String being sent: "+strBody)
+    this.httpclient.post(this.solveSecantURL,strBody,{responseType:'text'}).subscribe(response=>{
+      if(response==='Invalid'){
+        this.errorAlert(5)
+      } else {
+        console.log(response)
+      }
+    })
+  }
 
 }
 
