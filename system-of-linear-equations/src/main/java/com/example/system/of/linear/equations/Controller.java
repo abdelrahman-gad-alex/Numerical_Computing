@@ -336,8 +336,8 @@ public class Controller {
     @PostMapping("/bisection")
     String solveBisection(@RequestBody String reqParam) throws JSONException
     {
-      //  try
-       // {
+        try
+        {
             JSONObject jas = new JSONObject(reqParam);
             int fig = jas.getInt("fig");
             double EPS = jas.getDouble("EPS");
@@ -365,17 +365,16 @@ public class Controller {
             Gson gson = new Gson();
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
-           // tempHM.put("steps", steps);
+            tempHM.put("steps", steps);
             String ans = gson.toJson(tempHM);
             
             return ans;
-      //  }
-      /*  catch (Exception e)
-        //{
-        	System.out.println(e.printStackTrace());
+        }
+        catch (Exception e)
+        {
         	System.out.println("Error");
             return "Invalid";
-      //  }*/
+       }
 
     }
     @PostMapping("/falsePosition")

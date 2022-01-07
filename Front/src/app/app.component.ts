@@ -79,7 +79,7 @@ export class AppComponent {
           var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
           
           dividedTxt[i]= dividedTxt[i].replace(evenNegRegex,"+")
-          dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"-")
+          dividedTxt[i]=dividedTxt[i].replace(oddNegRegex,"+-")
           dividedTxt[i]=dividedTxt[i].replace(insertOneToLonelyRegex,"1")
           dividedTxt[i]=dividedTxt[i].replace(insertTimesRegex,"*");
           while(dividedTxt[i].includes("+"))
@@ -692,6 +692,8 @@ export class AppComponent {
         
       } else {
         console.log(response)
+        this.Selector.res=JSON.parse(response)
+        this.Selector.handleSteps()
       }
     })
 
@@ -727,6 +729,8 @@ export class AppComponent {
         this.errorAlert(5)
       } else {
         console.log(response)
+        this.Selector.res=JSON.parse(response)
+        this.Selector.handleSteps()
       }
     })
   }
@@ -770,6 +774,8 @@ export class AppComponent {
         this.errorAlert(5)
       } else {
         console.log(response)
+        this.Selector.res=JSON.parse(response)
+        this.Selector.handleSteps()
       }
     })
   }
@@ -806,6 +812,8 @@ export class AppComponent {
         this.errorAlert(5)
       } else {
         console.log(response)
+        this.Selector.res=JSON.parse(response)
+        this.Selector.handleSteps()
       }
     })
   }
@@ -840,6 +848,8 @@ export class AppComponent {
         this.errorAlert(5)
       } else {
         console.log(response)
+        this.Selector.res=JSON.parse(response)
+        this.Selector.handleSteps()
       }
     })
   }

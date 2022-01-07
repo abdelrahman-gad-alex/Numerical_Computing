@@ -322,11 +322,11 @@ export class SelectorComponent implements OnInit {
 
 
   handleSubmit(){
-    var canvas = <HTMLCanvasElement>document.getElementById("canvas");
+    //var canvas = <HTMLCanvasElement>document.getElementById("canvas");
 
-    canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+  //  canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
     this.emitter.emit()
-    console.log(Globals.drawEquation)
-    this.draw(15);
+    //console.log(Globals.drawEquation)
+   // this.draw(15);
   }
 }
