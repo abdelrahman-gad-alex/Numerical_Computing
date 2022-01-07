@@ -93,26 +93,35 @@ export class AppComponent {
       case "Newton-Raphson":
       case "Secant Method":
         //must be one equation
-        var fxRegex=/^f\(x\)=[a-z\d^+()]+(?!=)$/gm
+        var fxRegex=/^f\(x\)=[a-z\d-*/^+()]+(?!=)$/gm
         if(this.numberOfeq!==1 || !fxRegex.test(txt)){
           this.errorAlert(0);
+          
+          console.log("TESSST")
           return
         }
             
+        var divtxt = txt.split("=")
+        // lhs f(x)
+        var LHS = divtxt[0]
+        var RHS = divtxt[1]
         
         var evenNegRegex = /(?<!-)((?:--)+)(?!-)/g
         var oddNegRegex = /(?<!^|-|\+)(-(?:--)*)(?!-)/g
-        var insertOneToLonelyRegex=/(?<![\d\*])(?=[a-zA-Z])/g
-        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=[a-zA-z])/g 
-        txt=txt.replace(evenNegRegex,"+")
-        txt=txt.replace(oddNegRegex,"-")
-        txt=txt.replace(insertOneToLonelyRegex,"1")
-        txt=txt.replace(insertTimesRegex,"*");
-
+        // var insertOneToLonelyRegex=/(?<![\d\*])(?=x)/g
+        var insertTimesRegex=/(?<=(\d*\.)?\d+)(?=x)/g 
+        RHS=RHS.replace(evenNegRegex,"+")
+        RHS=RHS.replace(oddNegRegex,"-")
+        // RHS=RHS.replace(insertOneToLonelyRegex,"1")
+        RHS=RHS.replace(insertTimesRegex,"*");
+        console.log(RHS)
+        txt=LHS+'='+RHS
         this.strEq=txt
         var validating=validTs(this.strEq)
+        console.log("")
         if(validating==="Invalid"){
           this.errorAlert(0)
+          console.log("tsttt")
           return;
         }
         break
