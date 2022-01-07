@@ -83,8 +83,9 @@ public class Bisection {
         double xr=0 ;
         double ea ;
         for(int i=0 ; i< maxIterations ; i++){
+            double xrold = xr ;
             xr = round( (xu+xl) /2.0) ;
-            ea = round(Math.abs(xu-xl)/xl) ;
+            ea = round(Math.abs(xr-xrold)/xr) ;
 
             double fl = fx(function,xl) ;
             double fr = fx(function,xr);
