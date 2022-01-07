@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders,HttpParams } from "@angular/common/http";
 import { SelectorComponent } from './selector/selector.component';
 import { requestData,bisection,falsePosition,fixedPoint,newtonRaphson,secant } from './requestData';
 import { Globals } from './Globals';
+import * as math from 'mathjs';
 
 @Component({
   selector: 'app-root',
@@ -129,77 +130,8 @@ export class AppComponent {
         RHS=RHS.replace(insertTimesRegex,"*");
         console.log(RHS)
         txt=LHS+'='+RHS
-        this.strEq=txt
-        var validating=validTs(this.strEq)
-        if(validating==="Invalid"){
-          this.errorAlert(0)
-          console.log("tsttt")
-          return;
-        }
-        
-        // var mathPowReg=/(?<![\d\.])(?=Math\.(sin|cos|tan)\(-?[x\.\d\*\+\-/]*\)\^-?[x\d\.]|-?[x\d\.\-]+\^-?[x\d\.])/g
-        // var commaReg=/\^/g
-        // var bracketReg= /(?<=Math\.pow\(-?[\d\.x]+,-?[\d\.x]+)(?=[-+*/]|$)/g
-        // validating=validating.replace(mathPowReg,"Math.pow(")
-        // validating=validating.replace(commaReg,",")
-        // validating=validating.replace(bracketReg,")")
-        console.log("validated eq is " +validating);
-        Globals.drawEquation=validating    
+        this.strEq=txt 
         break
-
-
-        //5^3
-        //Math.pow(5,3)
-
-    function validTs(s: string):string
-      {
-        if(!s.startsWith("f(x)="))
-        {
-            return "Invalid"
-        }
-        s = s.substring(s.indexOf("f(x)=")+5)
-        while(s.includes("sin("))
-        {
-            s= s.replace("sin(", "Math.sIn(x)")
-        }
-        while(s.includes("Math.sIn(x)"))
-        {
-            s = s.replace("Math.sIn(x)", "Math.sin(")
-        }
-        while(s.includes("cos("))
-        {
-            s= s.replace("cos(", "Math.sIn(x)")
-        }
-        while(s.includes("Math.sIn(x)"))
-        {
-            s = s.replace("Math.sIn(x)", "Math.cos(")
-        }
-        while(s.includes("e"))
-        {
-            s= s.replace("e", "Math.sIn(x)")
-        }
-        while(s.includes("Math.sIn(x)"))
-        {
-            s = s.replace("Math.sIn(x)", "Math.E")
-        }
-        while(s.includes("^"))
-        {
-          s = s.replace("^", "**")
-        }
-        // if(temp.is)
-        try
-        {
-          let x = 1
-          let temp = eval(s)
-        }
-        catch(error)
-        {
-          return "Invalid"
-        }
-
-      // s= s.replace("sin(x)", "Math.sin(x)")
-      return s;
-      }
     }
 
 
@@ -246,6 +178,74 @@ export class AppComponent {
     }
     this.strEq=""
   }
+
+
+  validTs(s: string):string
+  {
+    if(!s.startsWith("f(x)="))
+    {
+        return "Invalid"
+    }
+    s = s.substring(s.indexOf("f(x)=")+5)
+    while(s.includes("sin("))
+    {
+        s= s.replace("sin(", "Math.sIn(x)")
+    }
+    while(s.includes("Math.sIn(x)"))
+    {
+        s = s.replace("Math.sIn(x)", "Math.sin(")
+    }
+    while(s.includes("cos("))
+    {
+        s= s.replace("cos(", "Math.sIn(x)")
+    }
+    while(s.includes("Math.sIn(x)"))
+    {
+        s = s.replace("Math.sIn(x)", "Math.cos(")
+    }
+    while(s.includes("e"))
+    {
+        s= s.replace("e", "Math.sIn(x)")
+    }
+    while(s.includes("Math.sIn(x)"))
+    {
+        s = s.replace("Math.sIn(x)", "Math.E")
+    }
+    while(s.includes("^"))
+    {
+      s = s.replace("^", "**")
+    }
+    // if(temp.is)
+    try
+    {
+      let x = 1
+      let temp = eval(s)
+    }
+    catch(error)
+    {
+      return "Invalid"
+    }
+
+  // s= s.replace("sin(x)", "Math.sin(x)")
+  return s;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /*
@@ -685,6 +685,20 @@ export class AppComponent {
       reqBody.xu=this.getUpperXguess()
       console.log("Guesses present "+reqBody.xl+" "+reqBody.xu);
     }
+
+
+    var validating=this.validTs(this.strEq)
+        if(validating==="Invalid"){
+          this.errorAlert(0)
+          console.log("tstttbisec")
+          return;
+        }
+
+    console.log("validated eq is " +validating);
+    Globals.drawEquation=validating 
+    
+    
+
     var strBody=JSON.stringify(reqBody)
     console.log("JSON String being sent: "+strBody)
     this.httpclient.post(this.solveBisectionURL,strBody,{responseType:'text'}).subscribe(response=>{
@@ -693,7 +707,8 @@ export class AppComponent {
         console.log(response);
         
       } else {
-        console.log(response)
+        console.log("original : " + Globals.drawEquation )
+        console.log(response) 
         this.Selector.res=JSON.parse(response)
         this.Selector.handleSteps()
       }
@@ -724,15 +739,30 @@ export class AppComponent {
       reqBody.xu=this.getUpperXguess()
       console.log("Guesses present "+reqBody.xl+" "+reqBody.xu);
     }
+
+
+    var validating=this.validTs(this.strEq)
+    if(validating==="Invalid"){
+      this.errorAlert(0)
+      console.log("tstttfalpos")
+      return;
+    }
+
+    console.log("validated eq is " +validating);
+    Globals.drawEquation=validating 
+
     var strBody=JSON.stringify(reqBody)
     console.log("JSON String being sent: "+strBody)
     this.httpclient.post(this.solveFalsePositionURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
+
+        console.log("original : " + Globals.drawEquation )
+
         console.log(response)
         this.Selector.res=JSON.parse(response)
-        // this.Selector.handleSteps()
+        this.Selector.handleSteps()
       }
     })
   }
@@ -759,6 +789,18 @@ export class AppComponent {
       console.log("Guesses present "+reqBody.x0);
     }
 
+
+
+    var validating=this.validTs(this.strEq)
+    if(validating==="Invalid"){
+      this.errorAlert(0)
+      console.log("tstttnewton")
+      return;
+    }
+
+    console.log("validated eq is " +validating);
+    Globals.drawEquation=validating
+
     if(mod==='mod1'){
       if(isNaN(this.getMultiplicity())){
         this.errorAlert(5)
@@ -775,6 +817,20 @@ export class AppComponent {
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
+        var divided=this.strEq.split('=')
+        var firstDerivative=math.derivative(divided[1], 'x')
+        var processed=divided[0]+'='+firstDerivative.toString()
+        Globals.drawEquationd=this.validTs(processed)
+        if(mod === 'mod2'){
+          var secondDerivative=math.derivative(firstDerivative.toString(), 'x')
+          var processed2=divided[0]+'='+secondDerivative.toString()
+          Globals.drawEquationdd=this.validTs(processed2)
+        }
+
+        console.log("original : " + Globals.drawEquation )
+        console.log("first d  : " + Globals.drawEquationd)
+        console.log("second d  : " + Globals.drawEquationdd)
+
         console.log(response)
         this.Selector.res=JSON.parse(response)
         this.Selector.handleSteps()
@@ -806,6 +862,16 @@ export class AppComponent {
       console.log("Guesses present "+reqBody.x0);
     }
 
+
+    var validating=this.validTs(this.strEq)
+    if(validating==="Invalid"){
+      this.errorAlert(0)
+      console.log("tstttnewton")
+      return;
+    }
+
+    console.log("validated eq is " +validating);
+    Globals.drawEquation=validating
    
     var strBody=JSON.stringify(reqBody)
     console.log("JSON String being sent: "+strBody)
@@ -813,6 +879,7 @@ export class AppComponent {
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
+
         console.log(response)
         this.Selector.res=JSON.parse(response)
         this.Selector.handleSteps()
@@ -843,6 +910,18 @@ export class AppComponent {
       reqBody.x1=this.getX1()
       console.log("Guesses present "+reqBody.x0+" "+reqBody.x1);
     }
+
+    var validating=this.validTs(this.strEq)
+    if(validating==="Invalid"){
+      this.errorAlert(0)
+      console.log("tstttnewton")
+      return;
+    }
+
+    console.log("validated eq is " +validating);
+    Globals.drawEquation=validating
+
+
     var strBody=JSON.stringify(reqBody)
     console.log("JSON String being sent: "+strBody)
     this.httpclient.post(this.solveSecantURL,strBody,{responseType:'text'}).subscribe(response=>{
@@ -850,6 +929,19 @@ export class AppComponent {
         this.errorAlert(5)
       } else {
         console.log(response)
+
+        var divided=this.strEq.split('=')
+        var firstDerivative=math.derivative(divided[1], 'x')
+        var processed=divided[0]+'='+firstDerivative.toString()
+        Globals.drawEquationd=this.validTs(processed)
+        
+        var secondDerivative=math.derivative(firstDerivative.toString(), 'x')
+        var processed2=divided[0]+'='+secondDerivative.toString()
+        Globals.drawEquationdd=this.validTs(processed2)
+        console.log("original : " + Globals.drawEquation )
+        console.log("first d  : " + Globals.drawEquationd)
+        console.log("second d  : " + Globals.drawEquationdd)
+
         this.Selector.res=JSON.parse(response)
         this.Selector.handleSteps()
       }

@@ -49,7 +49,7 @@ public class Bisection {
         Argument x0 = new Argument("x = 1") ;
         x0.setArgumentValue(x);
         double fx = new Expression("f(x)",f, x0).calculate() ;
-        if(Double.isNaN(fx))
+        if(Double.isNaN(fx))   // if the function has problem it returns NaN
             return fx ;
         else
             return round(fx) ;
@@ -57,7 +57,7 @@ public class Bisection {
 
     void endTime(long start){
         long endd = System.nanoTime();
-        time = (endd-start) / 1e6 ;
+        time = (endd-start) / 1e6 ;  // to get it in ms
 
     }
     public double getTime(){
@@ -69,10 +69,10 @@ public class Bisection {
         steps = new LinkedList<HashMap<String,Double>>() ;
         hasSolution = true ;
 
-        long start = System.nanoTime();
+        long start = System.nanoTime(); // the start time
 
-        double[] xlxu = xlxu(function) ;
-        if(!hasSolution){
+        double[] xlxu = xlxu(function) ;    // compute xl & xu
+        if(!hasSolution){   // in xlxu() will see if it has solution or not
             endTime(start);
             return -1 ;
         }
@@ -84,14 +84,14 @@ public class Bisection {
         double ea ;
         for(int i=0 ; i< maxIterations ; i++){
             double xrold = xr ;
-            xr = round( (xu+xl) /2.0) ;
+            xr = round( (xu+xl) /2.0) ;    // the calculation of xr
             ea = round(Math.abs(xr-xrold)/xr) ;
 
             double fl = fx(function,xl) ;
             double fr = fx(function,xr);
-            update(xl, xu, xr, fr, ea);
+            update(xl, xu, xr, fr, ea);   // add it to the steps
 
-            if(fl ==0){
+            if(fl ==0){   // if one xl, xr, xu is the solution
                 endTime(start);
                 return xl ;
             }else if(fr ==0){
@@ -102,14 +102,13 @@ public class Bisection {
                 return xu ;
             }
 
-            if(fl*fr <0 ){ // test
+            if(fl*fr <0 ){   // test
                 xu = xr ;
             }else {
                 xl = xr ;
             }
 
-            if(Math.abs(fr) <es || ea<es){
-
+            if(Math.abs(fr) <es || ea<es){  // the stopping condition
                 hasSolution = true ;
                 break;
             }
