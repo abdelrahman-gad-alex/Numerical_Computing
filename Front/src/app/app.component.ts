@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams } from "@angular/common/http";
 import { SelectorComponent } from './selector/selector.component';
 import { requestData } from './requestData';
-import { JsonPipe } from '@angular/common';
+import { Globals } from './Globals';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,9 +22,9 @@ export class AppComponent {
   title = 'Front';
   numberOfeq:number=2;
   strEq:string="";
+  drawEq:string="";
   constructor(private httpclient :HttpClient){} 
   Selector = new SelectorComponent
-
   /**
    * This function is called when the submit button is pressed.
    * it separates the text by the newline character into multiple separate equations
@@ -118,16 +119,27 @@ export class AppComponent {
         txt=LHS+'='+RHS
         this.strEq=txt
         var validating=validTs(this.strEq)
-        console.log("")
         if(validating==="Invalid"){
           this.errorAlert(0)
           console.log("tsttt")
           return;
         }
+        
+        var mathPowReg=/(?<![\d\.])(?=[x\d\.\-]+\^[x\d\.\-])/g
+        var commaReg=/\^/g
+        var bracketReg= /(?<=Math\.pow\(-?[\d\.x]+,-?[\d\.x]+)(?=[-+*/]|$)/g
+        validating=validating.replace(mathPowReg,"Math.pow(")
+        validating=validating.replace(commaReg,",")
+        validating=validating.replace(bracketReg,")")
+        console.log(validating);
+        Globals.drawEquation=validating    
         break
 
 
-    function validTs(s: string): any
+        //5^3
+        //Math.pow(5,3)
+
+    function validTs(s: string):string
       {
         if(!s.startsWith("f(x)="))
         {
@@ -159,7 +171,7 @@ export class AppComponent {
             s = s.replace("Math.sIn(x)", "Math.E")
         }
       // s= s.replace("sin(x)", "Math.sin(x)")
-      console.log(s)
+      return s;
       }
     }
 

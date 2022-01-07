@@ -1,4 +1,5 @@
 import { Component, OnInit , Output , EventEmitter } from '@angular/core';
+import { Globals } from '../Globals';
 
 @Component({
   selector: 'app-selector',
