@@ -84,7 +84,7 @@ public class NewtonRaphson {
     }
 
     // regular
-    double newton (String function){
+    public double newton (String function){
         steps = new LinkedList<HashMap<String,Double>>() ;
 
         long start = System.nanoTime();
@@ -121,7 +121,7 @@ public class NewtonRaphson {
     }
 
     // modified 1
-    double newtonModify1(String function, int m){
+    public double newtonModify1(String function, int m){
         steps = new LinkedList<HashMap<String,Double>>() ;
 
         long start = System.nanoTime();
@@ -159,7 +159,7 @@ public class NewtonRaphson {
     }
 
     // modified 2
-    double newtonModify2 (String function){
+    public double newtonModify2 (String function){
         steps = new LinkedList<HashMap<String,Double>>() ;
 
         long start = System.nanoTime();

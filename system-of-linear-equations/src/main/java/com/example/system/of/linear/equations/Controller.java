@@ -1,8 +1,7 @@
 package com.example.system.of.linear.equations;
 
-import com.example.system.of.linear.equations.Nonlinear.Bisection;
+import com.example.system.of.linear.equations.Nonlinear.*;
 //import com.example.system.of.linear.equations.Nonlinear.Bracketing;
-import com.example.system.of.linear.equations.Nonlinear.FalsePosition;
 import com.example.system.of.linear.equations.SystemModels.*;
 import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
@@ -399,6 +398,134 @@ public class Controller {
             return "Invalid";
         }
 
+    }
+    @PostMapping("/newton")
+    String solveNewtonRaphson(@RequestBody String reqParam) throws JSONException
+    {
+        try
+        {
+            JSONObject jas = new JSONObject(reqParam);
+            int fig = jas.getInt("fig");
+            double EPS = jas.getDouble("EPS");
+            int itr = jas.getInt("itr");
+            String func = jas.getString("func");
+            String type = jas.getString("type");
+//            double x0 = jas.getDouble("x0");
+            boolean isGuess = jas.getBoolean("userGuess");
+            NewtonRaphson NR = new NewtonRaphson();
+            NR.setEs(EPS);
+            NR.setMaxIterations(itr);
+            NR.setNoFigures(fig);
+            int m = jas.getInt("m");
+            double res =0;
+            if(isGuess)
+            {
+                double x0 = jas.getDouble("x0");
+                NR.setx0(x0);
+            }
+            if(type.equals("original"))
+            {
+                res = NR.newton(func);
+            }
+            else if(type.equals("mod1"))
+            {
+                res = NR.newtonModify1(func, m);
+            }
+            else if(type.equals("mod1"))
+            {
+                res = NR.newtonModify2(func);
+            }
+            if(!NR.HasSolution())
+            {
+                return "Invalid";
+            }
+            LinkedList<HashMap<String, Double>> steps = NR.getSteps();
+            Gson gson = new Gson();
+            HashMap<String, Object> tempHM = new HashMap<String, Object>();
+            tempHM.put("res", res);
+            tempHM.put("steps", steps);
+            String ans = gson.toJson(tempHM);
+            return ans;
+        }
+        catch (Exception e)
+        {
+            return "Invalid";
+        }
+    }
+    @PostMapping("/fixedPoint")
+    String solveFixedPoint(@RequestBody String reqParam) throws JSONException
+    {
+        try
+        {
+            JSONObject jas = new JSONObject(reqParam);
+            int fig = jas.getInt("fig");
+            double EPS = jas.getDouble("EPS");
+            int itr = jas.getInt("itr");
+            String func = jas.getString("func");
+            String type = jas.getString("type");
+//            double x0 = jas.getDouble("x0");
+            boolean isGuess = jas.getBoolean("userGuess");
+            FixedPoint FP = new FixedPoint();
+            FP.setEs(EPS);
+            FP.setMaxIterations(itr);
+            FP.setNoFigures(fig);
+            double res =0;
+            if(isGuess)
+            {
+                double x0 = jas.getDouble("x0");
+//                FP.setx0(x0);
+            }
+            res = FP.fixedpt(func);
+            LinkedList<HashMap<String, Double>> steps = FP.getSteps();
+            Gson gson = new Gson();
+            HashMap<String, Object> tempHM = new HashMap<String, Object>();
+            tempHM.put("res", res);
+            tempHM.put("steps", steps);
+            String ans = gson.toJson(tempHM);
+            return ans;
+        }
+        catch (Exception e)
+        {
+            return "Invalid";
+        }
+    }
+    @PostMapping("/secant")
+    String solveSecant(@RequestBody String reqParam) throws JSONException
+    {
+        try
+        {
+            JSONObject jas = new JSONObject(reqParam);
+            int fig = jas.getInt("fig");
+            double EPS = jas.getDouble("EPS");
+            int itr = jas.getInt("itr");
+            String func = jas.getString("func");
+            String type = jas.getString("type");
+            boolean isGuess = jas.getBoolean("userGuess");
+            Secant secant = new Secant();
+            secant.setEs(EPS);
+            secant.setMaxIterations(itr);
+            secant.setNoFigures(fig);
+            double res =0;
+            if(isGuess)
+            {
+                double x0 = jas.getDouble("x0");
+                double x1 = jas.getDouble("x1");
+                secant.setx0(x0);
+                secant.setx1(x1);
+            }
+            res = secant.secant(func);
+            LinkedList<HashMap<String, Double>> steps = secant.getSteps();
+            Gson gson = new Gson();
+            HashMap<String, Object> tempHM = new HashMap<String, Object>();
+            tempHM.put("res", res);
+            tempHM.put("steps", steps);
+            String ans = gson.toJson(tempHM);
+            return ans;
+        }
+        catch (Exception e)
+        {
+            return "Invalid";
+        }
     }
 
 
