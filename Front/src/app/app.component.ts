@@ -125,7 +125,7 @@ export class AppComponent {
           return;
         }
         
-        var mathPowReg=/(?<![\d\.])(?=[x\d\.\-]+\^[x\d\.\-])/g
+        var mathPowReg=/(?<![\d\.])(?=Math\.(sin|cos|tan)\(-?[x\.\d]*\)\^-?[x\d\.]|-?[x\d\.\-]+\^-?[x\d\.])/g
         var commaReg=/\^/g
         var bracketReg= /(?<=Math\.pow\(-?[\d\.x]+,-?[\d\.x]+)(?=[-+*/]|$)/g
         validating=validating.replace(mathPowReg,"Math.pow(")
