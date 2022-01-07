@@ -208,23 +208,63 @@ export class SelectorComponent implements OnInit {
     var val:number =+valueString; 
     var currentMode=val;
     document.getElementById("steps")!.style.display="block"
-    this.final()
-    switch(currentMode){
-      case 0:
-      case 1:
-        this.gSteps()
-        break;
+    if(currentMode<5){
+      this.final()
+      switch(currentMode){
+        case 0:
+        case 1:
+          this.gSteps()
+          break;
 
-      case 2:
-      case 4:
-        this.jgsSteps()
-        break; 
-        
-      case 3:
-        this.luSteps() 
+        case 2:
+        case 4:
+          this.jgsSteps()
+          break; 
+          
+        case 3:
+          this.luSteps() 
+      }
     }
-    
+    else{
+      this.finalNL(currentMode)
+    }
   }
+
+  finalNL(currentMode:number){// a function to show the final answers and the time
+      var span =document.getElementById("final"+"0")
+      span!.style.display = "block"
+      span!.innerText=("x= "+ this.res.res.toString())
+      var ss=document.getElementById("stepss")
+      ss!.replaceChildren("")
+      for(let i of this.res.steps ){
+        var nw=document.createElement("span")
+        nw.style.fontSize="30px"
+        nw.style.fontStyle="bold"        
+        switch(currentMode){
+          case 5:
+          case 6:
+            nw.innerText=("xl= "+i.xl+" ,xr= "+i.xr+" ,f(xr)= "+i.fxr+"\n xu= "+i.xu +" ,ea= "+i.ea+"\n\n")
+            break;
+          case 8:
+          case 9:
+            nw.innerText=("xi= "+i.xi+" ,f(xi)= "+i.fxi+"\n xi+1= "+i.xi1+" ,f(xi+1)= "+i.fxi1+"\n f'(xi)= "+i.fdxi +" ,ea= "+i.ea +"\n\n")
+            break;
+              
+        }
+        ss!.appendChild(nw)
+      }
+    // var span =document.getElementById("runTime")
+    // span!.style.display = "block"
+    // span!.innerText=("Runtime is "+ this.res.time+"m.s")
+  }
+
+
+
+
+
+
+
+
 
   luSteps(){ //a function to show the steps of the LU decompisation
     for (let z=0;z<3;z++){
@@ -322,11 +362,11 @@ export class SelectorComponent implements OnInit {
 
 
   handleSubmit(){
-    //var canvas = <HTMLCanvasElement>document.getElementById("canvas");
+    var canvas = <HTMLCanvasElement>document.getElementById("canvas");
 
-  //  canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
     this.emitter.emit()
-    //console.log(Globals.drawEquation)
-   // this.draw(15);
+    console.log(Globals.drawEquation)
+    this.draw(15);
   }
 }

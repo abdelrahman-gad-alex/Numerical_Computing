@@ -208,23 +208,23 @@ public class NewtonRaphson {
 
     void update(double xi1,double fi1, double xi,double f,double fd,double ea){
         HashMap<String ,Double> step = new HashMap<String ,Double>() ;
-        step.put("xi+1",xi1) ;
-        step.put("f(xi+1)",fi1) ;
+        step.put("xi1",xi1) ;
+        step.put("fxi1",fi1) ;
         step.put("xi",xi) ;
-        step.put("f(xi)",f) ;
-        step.put("f'(xi)",fd) ;
+        step.put("fxi",f) ;
+        step.put("fdxi",fd) ;
         step.put("ea",ea) ;
 
         steps.add(step) ;
     }
     void updateModified(double xi1,double fi1, double xi,double fi,double fd, double fdd, double ea){
         HashMap<String ,Double> step = new HashMap<String ,Double>() ;
-        step.put("xi+1",xi1) ;
-        step.put("f(xi+1)",fi1) ;
+        step.put("xi1",xi1) ;
+        step.put("fxi1",fi1) ;
         step.put("xi",xi) ;
-        step.put("f(xi)",fi) ;
-        step.put("f'(xi)",fd) ;
-        step.put("f''(xi)",fdd) ;
+        step.put("fxi",fi) ;
+        step.put("fdxi",fd) ;
+        step.put("fddxi",fdd) ;
         step.put("ea",ea) ;
         steps.add(step) ;
     }

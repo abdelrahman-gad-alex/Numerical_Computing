@@ -123,7 +123,7 @@ public class Bisection {
         step.put("xl",xl) ;
         step.put("xu",xu) ;
         step.put("xr",xr) ;
-        step.put("f(xr)",fr) ;
+        step.put("fxr",fr) ;
         step.put("ea",ea) ;
         steps.add(step) ;
     }

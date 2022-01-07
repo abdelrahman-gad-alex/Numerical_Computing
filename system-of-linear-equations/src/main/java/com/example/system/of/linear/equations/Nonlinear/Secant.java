@@ -122,7 +122,7 @@ public class Secant {
     void update(double xi,double f, double ea){
         HashMap<String ,Double> step = new HashMap<String ,Double>() ;
         step.put("xi",xi) ;
-        step.put("f(xi)",f) ;
+        step.put("fxi",f) ;
         step.put("ea",ea) ;
         steps.add(step) ;
     }
