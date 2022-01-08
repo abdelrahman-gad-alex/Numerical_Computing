@@ -96,6 +96,10 @@ public class NewtonRaphson {
         }
         double xi = x0 ;
 
+        if(fdx(function, xi)==0 ){
+            xi+=1 ;
+        }
+
 
         for(int i=0 ; i< maxIterations ; i++){
             double fi = fx(function, xi) ;
@@ -133,6 +137,9 @@ public class NewtonRaphson {
             return -1 ;
         }
         double xi = x0 ;
+        if(fdx(function, xi)==0 ){
+            xi+=1 ;
+        }
 
         for(int i=0 ; i< maxIterations ; i++){
             double fi = fx(function, xi) ;
@@ -171,6 +178,10 @@ public class NewtonRaphson {
             return -1 ;
         }
         double xi = x0 ;
+        
+        if(fdx(function, xi)==0 ){
+            xi+=1 ;
+        }
 
         for(int i=0 ; i< maxIterations ; i++){
             double fi = fx(function, xi) ;

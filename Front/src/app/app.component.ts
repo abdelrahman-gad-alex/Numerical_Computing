@@ -421,7 +421,7 @@ export class AppComponent {
 
 
       case 5:
-        message="Error"
+        message="Internal Error!, function diverges, has no solution"
         break
       default:
         message="Error"
@@ -804,7 +804,7 @@ export class AppComponent {
 
     if(mod==='mod1'){
       if(isNaN(this.getMultiplicity())){
-        this.errorAlert(5)
+        this.errorAlert(0)
         return
       }
       else{
