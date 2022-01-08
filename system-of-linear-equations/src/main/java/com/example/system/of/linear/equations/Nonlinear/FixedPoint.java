@@ -47,6 +47,9 @@ public class FixedPoint {
         Argument x0 = new Argument("x = 1") ;
         x0.setArgumentValue(x);
         double gx = round(new Expression("g(x)",f, x0).calculate()) ;
+        if(Double.isNaN(gx)){
+            hasSolution =false;
+        }
         return gx ;
     }
     void gdx(String function, double x) {
