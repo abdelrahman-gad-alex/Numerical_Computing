@@ -6,7 +6,7 @@ export class requestData{
     constructor(){
         this.itr=50
         this.fig=10
-        this.EPS=0.00002
+        this.EPS=0.00001
         this.func="";
         console.log("called parent constructor");
         
