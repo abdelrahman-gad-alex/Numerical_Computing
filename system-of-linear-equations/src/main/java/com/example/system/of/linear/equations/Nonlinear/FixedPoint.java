@@ -52,22 +52,7 @@ public class FixedPoint {
         }
         return gx ;
     }
-    void gdx(String function, double x) {
-        Function f = new Function(function);
-        Argument x0 = new Argument("x = 1");
-            x0.setArgumentValue(x);
-        System.out.println(function);
-        double gdx = new Expression("der(g(x),x)", f, x0).calculate();
-        System.out.println("GDX" + gdx);
 
-        if( gdx == 0.0){ return;}
-        if (!(Math.abs(gdx) < 1)) {
-            hasSolution = false;
-        } else {
-            hasSolution = true;
-        }
-        System.out.println("aa :"+hasSolution);
-    }
     public double fixedpt(String function) {
         long start = System.nanoTime();
         steps = new LinkedList<HashMap<String, Double>>();
@@ -89,7 +74,6 @@ public class FixedPoint {
             x_old=xr;
             System.out.println("old : "+xr);
 
-          //  gdx(fn,xr);
           xr = gx(fn,x_old);
           System.out.println("new :"+xr);
           ea = Math.abs(xr-x_old);
@@ -106,15 +90,7 @@ public class FixedPoint {
         else {
             hasSolution=true;
         }
-       /* if(hasSolution == false && flag == false){
-            flag =true;
-            steps.clear();
-           function = function.replaceAll("g\\(x\\)=","");
-           function= function.trim();
 
-         String F = "g(x)= (-1*("+function +"))";
-          return  fixedpt(F);
-        }*/
         endTime(start);
         return xr;
     }
