@@ -522,7 +522,7 @@ public class Controller {
             {
                 double x0 = jas.getDouble("x0");
                 //!!!!!Mark uncomment the line below
-//                FP.setx0(x0);
+              FP.setx0(x0);
             }
             //Checking if there is solution
             if(!FP.HasSolution())
