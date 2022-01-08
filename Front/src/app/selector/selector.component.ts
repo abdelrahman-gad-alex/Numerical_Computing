@@ -14,8 +14,8 @@ export class SelectorComponent implements OnInit {
   ngOnInit(): void {
     }
   fun1(x: number) {return eval(Globals.drawEquation);  }
-  fun2(x: number) {return Math.cos(3*x);}
-  fun3(x: number) {return Math.cos(3*x);}
+  fun2(x: number) {return eval(Globals.drawEquationd);}
+  fun3(x: number) {return eval(Globals.drawEquationdd);}
   fun4(x: number) {return x;}
  draw(max:number,currentMode:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -41,10 +41,14 @@ export class SelectorComponent implements OnInit {
     break;
   case 8:
   case 9:
-  case 10:    
   case 11:
-
+    this.funGraph(ctx!,axes,this.fun2,"rgb(244,34,114)",1,false,0);
     break;
+  case 10:    
+  this.funGraph(ctx!,axes,this.fun2,"rgb(244,34,114)",1,false,0);
+  this.funGraph(ctx!,axes,this.fun3,"rgb(0,159,183)",1,false,0);
+  break;
+
 }
 
 
