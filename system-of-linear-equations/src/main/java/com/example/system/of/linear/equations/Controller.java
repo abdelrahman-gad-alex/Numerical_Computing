@@ -510,7 +510,7 @@ public class Controller {
             double EPS = jas.getDouble("EPS");
             int itr = jas.getInt("itr");
             String func = jas.getString("func");
-            String type = jas.getString("type");
+           // String type = jas.getString("type");
             boolean isGuess = jas.getBoolean("userGuess");
             FixedPoint FP = new FixedPoint();
             FP.setEs(EPS);
@@ -537,7 +537,7 @@ public class Controller {
             HashMap<String, Object> tempHM = new HashMap<String, Object>();
             tempHM.put("res", res);
             tempHM.put("steps", steps);
-
+            tempHM.put("time",FP.getTime());
             String ans = gson.toJson(tempHM);
             return ans;
         }

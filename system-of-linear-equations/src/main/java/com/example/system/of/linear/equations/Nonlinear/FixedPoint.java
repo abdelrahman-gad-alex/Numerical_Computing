@@ -90,6 +90,7 @@ public class FixedPoint {
           System.out.println(xr);
           ea = Math.abs(xr-x_old);
           if (ea<es){
+              endTime(start);
               return xr;
           }
             update(x_old,xr,ea);
