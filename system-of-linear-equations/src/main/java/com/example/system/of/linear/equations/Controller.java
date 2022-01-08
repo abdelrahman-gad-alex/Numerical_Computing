@@ -525,11 +525,14 @@ public class Controller {
               FP.setx0(x0);
             }
             //Checking if there is solution
+
+            res = FP.fixedpt(func);
             if(!FP.HasSolution())
             {
+                System.out.println("FALSSSEEEe");
                 return "Invalid";
+
             }
-            res = FP.fixedpt(func);
             LinkedList<HashMap<String, Double>> steps = FP.getSteps();
             //we put the final solution, steps
             //in hashMap then we convert it to json string to send it to be viewed to user

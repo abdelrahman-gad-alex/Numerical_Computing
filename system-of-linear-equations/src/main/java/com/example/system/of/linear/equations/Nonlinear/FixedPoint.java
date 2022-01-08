@@ -63,6 +63,7 @@ public class FixedPoint {
         } else {
             hasSolution = true;
         }
+        System.out.println("aa :"+hasSolution);
     }
     public double fixedpt(String function) {
         long start = System.nanoTime();
@@ -71,7 +72,7 @@ public class FixedPoint {
         function = function.replaceAll("f\\(x\\)=","g\\(x\\)=");
         function= function.trim();
        String fn = function +"+x";
-        System.out.println(fn);
+        System.out.println("ah:"+fn);
         if(Double.isNaN(gx(fn,x0))){
             hasSolution = false ;
             endTime(start);
@@ -83,11 +84,11 @@ public class FixedPoint {
 
         for(int i=0 ; i< maxIterations ; i++){
             x_old=xr;
-            System.out.println(xr);
+            System.out.println("old : "+xr);
 
             gdx(fn,xr);
           xr = gx(fn,x_old);
-          System.out.println(xr);
+          System.out.println("new :"+xr);
           ea = Math.abs(xr-x_old);
           if (ea<es){
               endTime(start);
