@@ -86,7 +86,7 @@ public class FixedPoint {
             x_old=xr;
             System.out.println("old : "+xr);
 
-            gdx(fn,xr);
+          //  gdx(fn,xr);
           xr = gx(fn,x_old);
           System.out.println("new :"+xr);
           ea = Math.abs(xr-x_old);
@@ -95,6 +95,13 @@ public class FixedPoint {
               return xr;
           }
             update(x_old,xr,ea);
+        }
+        if(Math.abs(gx(function,xr))>100){
+            hasSolution =false;
+            return -1;
+        }
+        else {
+            hasSolution=true;
         }
        /* if(hasSolution == false && flag == false){
             flag =true;
