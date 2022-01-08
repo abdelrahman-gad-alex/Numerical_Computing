@@ -7,9 +7,10 @@ public class FixedPoint {
     double es = 0.00001 ;
     int noFigures = 0 ;
     int maxIterations = 50 ;
+   double x0 =0;
+    double time ;
     LinkedList<HashMap<String,Double>> steps ;
     boolean hasSolution = true ;
-    double[] xlxu = new double[]{0,0} ;
     public FixedPoint setEs(double es) {
         this.es = es;
         return this ;
@@ -23,39 +24,86 @@ public class FixedPoint {
         this.maxIterations = maxIterations;
         return this ;
     }
+    public FixedPoint setx0(double x0) {
+        this.x0 = x0;
+        return this ;
+    }
     public boolean HasSolution(){
         return hasSolution ;
     }
+    public double getTime(){
+        return time ;
+    }
+    void endTime(long start){
+        long endd = System.nanoTime();
+        time = (endd-start) / 1e6 ;
 
+    }
     public LinkedList getSteps(){
         return steps ;
     }
-    double fx(String function, double x){
+    double gx(String function, double x){
         Function f = new Function(function) ;
         Argument x0 = new Argument("x = 1") ;
         x0.setArgumentValue(x);
-        double fx = round(new Expression("f(x)",f, x0).calculate()) ;
-        return fx ;
+        double gx = round(new Expression("g(x)",f, x0).calculate()) ;
+        return gx ;
     }
-    double gx(String function , double x){
-        Expression e = new Expression(" der("+function+", x,"+x+")");
-        mXparser.consolePrintln("Res: " + e.getExpressionString() + " = " + e.calculate());
-     return e.calculate();
+    void gdx(String function, double x) {
+        Function f = new Function(function);
+        Argument x0 = new Argument("x = 1");
+            x0.setArgumentValue(x);
+        System.out.println(function);
+        double gdx = new Expression("der(g(x),x)", f, x0).calculate();
+        System.out.println("GDX" + gdx);
+
+        if( gdx == 0.0){ return;}
+        if (!(Math.abs(gdx) < 1)) {
+            hasSolution = false;
+        } else {
+            hasSolution = true;
+        }
     }
     public double fixedpt(String function) {
+        long start = System.nanoTime();
         steps = new LinkedList<HashMap<String, Double>>();
         hasSolution = true;
-        double[] xlxu = xlxu(function) ;
-        if(!hasSolution){
+        function = function.replaceAll("f\\(x\\)=","g\\(x\\)=");
+        function= function.trim();
+       String fn = function +"+x";
+        System.out.println(fn);
+        if(Double.isNaN(gx(fn,x0))){
+            hasSolution = false ;
+            endTime(start);
             return -1 ;
         }
-        double xl = xlxu[0] ;
-        double xu = xlxu[1] ;
-        double c = (xl+xu)/2;
+        double x_old=0 ;
+        double ea=0;
+        double xr=x0;
 
+        for(int i=0 ; i< maxIterations ; i++){
+            x_old=xr;
+            System.out.println(xr);
 
-        double xr=0 ;
-        double ea ;
+            gdx(fn,xr);
+          xr = gx(fn,x_old);
+          System.out.println(xr);
+          ea = Math.abs(xr-x_old);
+          if (ea<es){
+              return xr;
+          }
+            update(x_old,xr,ea);
+        }
+       /* if(hasSolution == false && flag == false){
+            flag =true;
+            steps.clear();
+           function = function.replaceAll("g\\(x\\)=","");
+           function= function.trim();
+
+         String F = "g(x)= (-1*("+function +"))";
+          return  fixedpt(F);
+        }*/
+        endTime(start);
         return xr;
     }
         double round(double x){
@@ -73,68 +121,14 @@ public class FixedPoint {
         x = Double.parseDouble( String.format("%.10g%n",x) ) ;
         return x ;
     }
-    double[] xlxu(String function){
-        if(xlxu[0] != 0 || xlxu[1] != 0){
-            if(fx(function,xlxu[0])*fx(function,xlxu[1]) < 0)
-                return xlxu ;
-            else {
-                hasSolution = false ;
-                return new double[]{0,0} ;
-            }
-        }
-
-        double x0 = 0 ;
-        double delta = 10 ;
-        double x1 = delta ;
-        double fx0 = fx(function,x0) ;
-        double fx1 = fx(function,x1) ;
-        hasSolution = false ;
-        if(Double.isNaN(fx0) && Double.isNaN(fx1)){
-            return new double[]{0,0} ;
-        }
-
-        for(int i=0 ; i<1000 ; i++){
-            // for positive
-            fx0 = fx(function,x0) ;
-            fx1 = fx(function,x1) ;
-
-            if(fx0*fx1 < 0){
-                hasSolution = true ;
-                break;
-            }
-            // for negative
-            fx0 = fx(function,x0*-1) ;
-            fx1 = fx(function,x1*-1) ;
-            if(fx0*fx1 <= 0){
-                double temp = x0 ;
-                x0 = -1*x1 ;
-                x1 = -1*temp ;
-                hasSolution = true ;
-                break;
-            }
-
-            x0 = x1 ;
-            x1 += delta ;
-        }
-        delta = 1 ;
-        x1 = x0 + delta ;
-
-        if(!hasSolution){
-            return new double[]{0,0} ;
-        }
-        for(int i=0 ; i<10 ; i++){
-            // for positive
-            fx0 = fx(function,x0) ;
-            fx1 = fx(function,x1) ;
-            if(fx0*fx1 <= 0){
-                break;
-            }
-            x0 = x1 ;
-            x1 += delta ;
-        }
-
-        return new double[]{x0,x1} ;
+    void update(double xr,double gx, double ea){
+        HashMap<String ,Double> step = new HashMap<String ,Double>() ;
+        step.put("xr",xr) ;
+        step.put("gx",gx) ;
+        step.put("ea",ea) ;
+        steps.add(step) ;
 
     }
+
 
 }
