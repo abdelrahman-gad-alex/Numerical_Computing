@@ -4,7 +4,6 @@ import { SelectorComponent } from './selector/selector.component';
 import { requestData,bisection,falsePosition,fixedPoint,newtonRaphson,secant } from './requestData';
 import { Globals } from './Globals';
 import * as math from 'mathjs';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
