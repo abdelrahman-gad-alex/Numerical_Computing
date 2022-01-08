@@ -816,6 +816,7 @@ export class AppComponent {
     console.log("JSON String being sent: "+strBody)
     this.httpclient.post(this.solveNewtonRaphsonURL,strBody,{responseType:'text'}).subscribe(response=>{
       if(response==='Invalid'){
+        console.log("invalid")
         this.errorAlert(5)
       } else {
         console.log(this.strEq)

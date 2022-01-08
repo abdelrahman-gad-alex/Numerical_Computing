@@ -17,6 +17,7 @@ export class SelectorComponent implements OnInit {
   fun2(x: number) {return eval(Globals.drawEquationd);}
   fun3(x: number) {return eval(Globals.drawEquationdd);}
   fun4(x: number) {return x;}
+  fun5(x: number) {return eval(Globals.drawEquationg);}
  draw(max:number,currentMode:number) {
  var canvas = <HTMLCanvasElement>document.getElementById("canvas");
  if (null==canvas || !canvas.getContext) return;
@@ -37,7 +38,8 @@ export class SelectorComponent implements OnInit {
     this.funGraph(ctx!,axes,this.fun1,"rgb(0,159,183)",1,true,(<HTMLInputElement>(document.getElementById("inpUpper"))).valueAsNumber);
     break;
     case 7:
-      this.funGraph(ctx!,axes,this.fun4,"rgb(0,159,183)",1,false,0);
+      this.funGraph(ctx!,axes,this.fun5,"rgb(244,34,114)",1,false,0);
+      this.funGraph(ctx!,axes,this.fun4,"rgb(0,159,183)",1,false,0);      
     break;
   case 8:
   case 9:
