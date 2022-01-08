@@ -286,6 +286,9 @@ export class SelectorComponent implements OnInit {
           case 6:
             nw.innerText=("xl= "+i.xl+" ,xr= "+i.xr+" ,f(xr)= "+i.fxr+"\n xu= "+i.xu +" ,ea= "+i.ea+"\n\n")
             break;
+          case 7:
+            nw.innerText=("g(x)= "+i.gx+" ,xr= "+i.xr+"\n ,ea= "+i.ea+"\n\n")
+            break;
           case 8:
           case 9:
             nw.innerText=("xi= "+i.xi+" ,f(xi)= "+i.fxi+"\n xi+1= "+i.xi1+" ,f(xi+1)= "+i.fxi1+"\n f'(xi)= "+i.fdxi +" ,ea= "+i.ea +"\n\n")
