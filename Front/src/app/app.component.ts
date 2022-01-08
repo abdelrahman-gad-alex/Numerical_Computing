@@ -871,7 +871,7 @@ export class AppComponent {
     var validating=this.validTs(this.strEq)
     if(validating==="Invalid"){
       this.errorAlert(0)
-      console.log("tstttnewton")
+      console.log("tstttfixed")
       return;
     }
 
@@ -884,6 +884,12 @@ export class AppComponent {
       if(response==='Invalid'){
         this.errorAlert(5)
       } else {
+
+        var divided=this.strEq.split('=')
+        var gx=divided[1]+'+x'
+        var processed=divided[0]+'='+gx
+        Globals.drawEquationg=this.validTs(processed)
+        
 
         console.log(response)
         this.Selector.res=JSON.parse(response)
